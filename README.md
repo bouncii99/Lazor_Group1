@@ -1,7 +1,9 @@
 # Lazor_Group1
 Lazor Group Project - Group 1
 
-Isaiah Chen, Troy Gonzalez, Pranav Mehta
+Isaiah Chen (ichen23@jhu.ed)
+Troy Gonzalez (tgonza10@jhu.edu)
+Pranav Mehta (pmehta12@jhu.edu)
 
 This code is used to find solutions to the "Lazors" game with the following criteria:
 1. Read in a Lazor board via a text file, using a specified board file format.
