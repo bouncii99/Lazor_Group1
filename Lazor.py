@@ -53,7 +53,7 @@ def read_bff(filename):
         filename: *str*
             The name of the .bff file to be read.
     **Returns**
-        grid: *list*
+        grid: *list, str*
             A list of lists corresponding to the grid from the original .bff
             file. Each list corresponds to a row of the grid and each string
             element corresponds to a spot on the board.
@@ -63,11 +63,11 @@ def read_bff(filename):
             The number of opaque blocks available to use to solve the puzzle.
         refract_blocks: *int*
             The number of refract blocks available to use to solve the puzzle.
-        lasers: *list*
+        lasers: *list, int*
             A list containing the lasers in the puzzle. For each laser, the
             first two integers correspond to the position of the laser and the
             last two integers correspond to the direction it is pointing in.
-        points: *list*
+        points: *list, int*
             A list containing the coordinates of the points where the lasers
             have to intersect to solve the puzzle.
     """
