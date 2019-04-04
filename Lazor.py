@@ -6,15 +6,11 @@ class Board:
     Board class represents the Lazors game board.
     **Parameters**
 
-        list all parameters that appear in __init__
-        rows: ints
-        columns: ints
     """
 
-    def __init__(self, rows, columns):
+    def __init__(self, grid):
         """ Create new board """
-        self.rows = rows
-        self.columns = columns
+        self.grid = grid
 
     def __repr__(self):
         """ Representation of the object for debugging """
@@ -24,15 +20,11 @@ class Board:
         """ String representation of the object """
         pass
 
-    def add_block(self, block_type):
-        """ Add a block to the board """
-        pass
-
     def place_block(self):
         """ Place a block at a given position """
         pass
 
-    def laser(self, x, y, vx, vy):
+    def laser(self):
         """ Specify a laser and the direction it is pointing in """
         # Laser can be represented by a system of lines/linear equations
         pass
@@ -43,6 +35,80 @@ class Board:
 
     def refresh(self):
         """ Redraw the board once a block has been moved """
+        pass
+
+
+class Block:
+    """
+    Make an object to represent each individual block
+
+    Use two types of booleans to describe the properties of the block:
+    transmit = True or False
+    reflect = True or False
+
+    For no block, transmit = True, reflect = False
+    Fora reflect block, transmit = False, reflect = True
+    For an opaque block, transmit = False, reflect = False
+    For a refract block, transmit = True, reflect = True
+    """
+    def __init__(self, block_type):
+        """ Create new block """
+        if block_type == "A":
+            self.transmit = False
+            self.reflect = True
+        elif block_type == "B":
+            self.transmit = False
+            self.reflect = False
+        elif block_type == "C":
+            self.transmit = True
+            self.reflect = True
+        else:
+            self.transmit = True
+            self.reflect = False
+
+    def __repr__(self):
+        """ Representation of the object for debugging """
+        pass
+
+    def __str__(self):
+        """ String representation of the object """
+        pass
+
+
+class Laser:
+    """
+    Make an object to represent each laser
+
+    The indices of the laser can tell us if the laser is hitting a vertical
+    position or a horizontal position
+    """
+    def __init__(self, laser):
+        """ Create new board """
+        self.laser = laser
+
+    def __repr__(self):
+        """ Representation of the object for debugging """
+        pass
+
+    def __str__(self):
+        """ String representation of the object """
+        pass
+
+
+class Point:
+    """
+    Make an object to represent the intersection point
+    """
+    def __init__(self, point):
+        """ Create new board """
+        self.point = point
+
+    def __repr__(self):
+        """ Representation of the object for debugging """
+        pass
+
+    def __str__(self):
+        """ String representation of the object """
         pass
 
 
@@ -122,10 +188,15 @@ def read_bff(filename):
 
 if __name__ == "__main__":
     # Input file name
-    fptr = "yarn_5.bff"
+    fptr = "mad_1.bff"
     # Read and parse through board file
     g, rflb, ob, rfrb, l, p = read_bff(fptr)
     # Make an instance of the board object and save it in a variable
-    board_row = len(g)
-    board_col = len(g[0])
-    board = Board(board_row, board_col)
+    board = Board(g)
+    # Make instances of all blocks
+    blocks = []
+    for i in range(rflb):
+        blocks.append(Block("A"))
+    # Make instances of the lasers
+
+    # Make instances of the points
