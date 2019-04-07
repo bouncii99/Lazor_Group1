@@ -8,21 +8,13 @@ class Board:
 
     """
 
-    def __init__(self, grid):
+    def __init__(self, grid, grid_loc):
         """ Create new board """
-        self.grid = board_id(grid)
-    def __repr__(self):
-        """ Representation of the object for debugging """
-        pass
-
-    def __str__(self):
-        """ String representation of the object """
-        pass
-    def board_id(grid):
+        self.grid = grid
         y = len(grid)
         x = []
         x_temp = []
-        for i in range(len(y)):
+        for i in range(y):
             col_id = grid[i]
             for j in range(len(col_id)):
                 if col_id[i] == "o":
@@ -30,7 +22,18 @@ class Board:
                 else:
                     x_temp.append(False)
                 x.append(x_temp)
-        return x
+        self.grid_loc = x
+
+    def __repr__(self):
+        """ Representation of the object for debugging """
+        return grid_loc
+
+    def __str__(self):
+        """ String representation of the object """
+        print str(grid_loc)
+
+    def board_id(grid):
+        pass
                 
 
 
@@ -209,7 +212,7 @@ if __name__ == "__main__":
     g, rflb, ob, rfrb, l, p = read_bff(fptr)
     print g
     # Make an instance of the board object and save it in a variable
-    board = Board(g)
+    print Board(g, g)
     # Make instances of all blocks
     blocks = []
     for i in range(rflb):
