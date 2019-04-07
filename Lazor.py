@@ -10,8 +10,7 @@ class Board:
 
     def __init__(self, grid):
         """ Create new board """
-        self.grid = grid
-
+        self.grid = board_id(grid)
     def __repr__(self):
         """ Representation of the object for debugging """
         pass
@@ -19,6 +18,23 @@ class Board:
     def __str__(self):
         """ String representation of the object """
         pass
+    def board_id(grid):
+        y = len(grid)
+        x = []
+        x_temp = []
+        for i in range(len(y)):
+            col_id = grid[i]
+            for j in range(len(col_id)):
+                if col_id[i] == "o":
+                    x_temp.append(True)
+                else:
+                    x_temp.append(False)
+                x.append(x_temp)
+        return x
+                
+
+
+
 
     def place_block(self):
         """ Place a block at a given position """
@@ -191,6 +207,7 @@ if __name__ == "__main__":
     fptr = "mad_1.bff"
     # Read and parse through board file
     g, rflb, ob, rfrb, l, p = read_bff(fptr)
+    print g
     # Make an instance of the board object and save it in a variable
     board = Board(g)
     # Make instances of all blocks
