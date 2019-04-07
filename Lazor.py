@@ -3,13 +3,23 @@ import re
 
 class Board:
     """
-    Board class represents the Lazors game board.
+    The Board class represents the entire Lazors game board, including the
+    lasers, blocks, and desired intersection points.
+
     **Parameters**
 
+        grid: *list, str*
+            The list of characters that represents all of the available spots
+            on the board. Each list inside the list represents a row of the
+            board.
+        grid_param: *list, boolean*
+            A list of True and False parameters corresponding to all of the
+            positions on the board. If the grid_param is True, then a block
+            can be placed in that position. If it is False, then that position
+            cannot contain a block, or a fixed block exists there already.
     """
 
     def __init__(self, grid, grid_loc):
-        """ Create new board """
         self.grid = grid
         y = len(grid)
         x = []
@@ -26,11 +36,11 @@ class Board:
 
     def __repr__(self):
         """ Representation of the object for debugging """
-        return grid_loc
+        return self.grid_loc
 
     def __str__(self):
         """ String representation of the object """
-        print str(grid_loc)
+        print str(self.grid_loc)
 
     def board_id(grid):
         pass
@@ -212,7 +222,7 @@ if __name__ == "__main__":
     g, rflb, ob, rfrb, l, p = read_bff(fptr)
     print g
     # Make an instance of the board object and save it in a variable
-    print Board(g, g)
+    #print Board(g, g)
     # Make instances of all blocks
     blocks = []
     for i in range(rflb):
