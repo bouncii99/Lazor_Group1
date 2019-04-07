@@ -19,28 +19,27 @@ class Board:
             cannot contain a block, or a fixed block exists there already.
     """
 
-    def __init__(self, grid, grid_loc):
+    def __init__(self, grid):
         self.grid = grid
-        y = len(grid)
-        x = []
-        x_temp = []
-        for i in range(y):
+        x1, x2 = [], []
+        for i in range(len(grid)):
             col_id = grid[i]
             for j in range(len(col_id)):
                 if col_id[i] == "o":
-                    x_temp.append(True)
+                    x2.append(True)
                 else:
-                    x_temp.append(False)
-                x.append(x_temp)
-        self.grid_loc = x
-
-    def __repr__(self):
-        """ Representation of the object for debugging """
-        return self.grid_loc
+                    x2.append(False)
+                x1.append(x2)
+        self.grid_param = x1
 
     def __str__(self):
-        """ String representation of the object """
-        print str(self.grid_loc)
+        s1 = "grid = " + str(self.grid)
+        s2 = "grid_param = " + str(self.grid_param)
+        return '\n'.join([s1, s2])
+
+    # def __str__(self):
+    #     """ String representation of the object """
+    #     pass
 
     def board_id(grid):
         pass
@@ -220,13 +219,10 @@ if __name__ == "__main__":
     fptr = "mad_1.bff"
     # Read and parse through board file
     g, rflb, ob, rfrb, l, p = read_bff(fptr)
-    print g
     # Make an instance of the board object and save it in a variable
-    #print Board(g, g)
+    print Board(g)
     # Make instances of all blocks
-    blocks = []
-    for i in range(rflb):
-        blocks.append(Block("A"))
+
     # Make instances of the lasers
 
     # Make instances of the points
