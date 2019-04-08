@@ -21,20 +21,23 @@ class Board:
 
     def __init__(self, grid):
         self.grid = grid
-        x1, x2 = [], []
+        x1 = []
         for i in range(len(grid)):
             col_id = grid[i]
+            x2 = []
             for j in range(len(col_id)):
-                if col_id[i] == "o":
+                if col_id[j] == "o":
                     x2.append(True)
                 else:
                     x2.append(False)
-                x1.append(x2)
+            x1.append(x2)
         self.grid_param = x1
+        # self.grid_param[0][0] = False
 
     def __str__(self):
         s1 = "grid = " + str(self.grid)
         s2 = "grid_param = " + str(self.grid_param)
+        # print type(self.grid_param[0][0])
         return '\n'.join([s1, s2])
 
     # def __str__(self):
