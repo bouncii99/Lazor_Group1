@@ -1,7 +1,6 @@
 """
 This file contains the class definitions for the blocks, lasers, intersection
-points, and the board itself. The main function creates all the class objects
-for the relevant BFF file.
+points, and the board itself.
 """
 import Read
 
@@ -66,20 +65,31 @@ class Block(object):
 
 class Laser(object):
     """
-    Make an object to represent each laser
+    This class represents each laser on the board.
 
-    The indices of the laser can tell us if the laser is hitting a vertical
-    position or a horizontal position
+    **Parameters**
+
+        laser: *list, int*
+            A list of integers representing the laser. The first two integers
+            correspond to the position of the laser and the last two integers
+            correspond to the direction it is pointing in.
     """
     def __init__(self, laser):
-        """ Create new board """
         self.position = (laser[0], laser[1])
         self.direction = (laser[2], laser[3])
 
-    def __str__(self):
-        s1 = "Position = " + str(self.position)
-        s2 = "Direction = " + str(self.direction)
+    def __repr__(self):
+        s1 = "position = " + str(self.position)
+        s2 = "direction = " + str(self.direction)
         return '\n'.join([s1, s2])
+
+    def __str__(self):
+        unit_vectors = [(1, 1), (1, -1), (-1, -1), (-1, 1)]
+        d = ["southeast", "northeast", "northwest", "southwest"]
+        i = unit_vectors.index(self.direction)
+        s1 = "This laser starts at position " + str(self.position)
+        s2 = "and is pointing " + d[i] + "."
+        return ' '.join([s1, s2])
 
 
 class Point(object):
@@ -170,7 +180,7 @@ def main():
     fptr = "mad_1.bff"
     # Read and parse through board file
     g, rflb, ob, rfrb, l, p = Read.read_bff(fptr)
-    test = Block(0)
+    test = Laser(l[0])
     print(test)
 
 
