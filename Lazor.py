@@ -1,4 +1,85 @@
+"""
+This file contains the class definitions for the blocks, lasers, intersection
+points, and the board itself. The main function creates all the class objects
+for the relevant BFF file.
+"""
 import Read
+
+
+class Block(object):
+    """
+    This class represents each individual block that can be placed onto the
+    board. We use two boolean variables to describe the properties of the each
+    block:
+        transmit - whether or not the block allows the laser to continue to
+                   travel in the same direction.
+        reflect - whether or not the block reflects the laser in the
+                  appropriate perpendicular direction.
+    There are four cases corresponding to the three different types of blocks
+    and when a spot has no block:
+        For a spot with no block, transmit = True and reflect = False.
+        For a reflect block, transmit = False and reflect = True.
+        For an opaque block, transmit = False and reflect = False.
+        For a refract block, transmit = True and reflect = True.
+    """
+    def __init__(self, block_type):
+        """ Create new block """
+        self.block_type = block_type
+        if block_type == 'A':
+            self.transmit = False
+            self.reflect = True
+        elif block_type == 'B':
+            self.transmit = False
+            self.reflect = False
+        elif block_type == 'C':
+            self.transmit = True
+            self.reflect = True
+        else:
+            self.transmit = True
+            self.reflect = False
+
+    def __str__(self):
+        if self.block_type == "A":
+            s1 = "Block Type = Reflect Block"
+        elif self.block_type == "B":
+            s1 = "Block Type = Opaque Block"
+        elif self.block_type == "C":
+            s1 = "Block Type = Reflect Block"
+        else:
+            return "Invalid block type"
+        s2 = "Transmit = " + str(self.transmit)
+        s3 = "Reflect = " + str(self.reflect)
+        return '\n'.join([s1, s2, s3])
+
+
+class Laser(object):
+    """
+    Make an object to represent each laser
+
+    The indices of the laser can tell us if the laser is hitting a vertical
+    position or a horizontal position
+    """
+    def __init__(self, laser):
+        """ Create new board """
+        self.position = (laser[0], laser[1])
+        self.direction = (laser[2], laser[3])
+
+    def __str__(self):
+        s1 = "Position = " + str(self.position)
+        s2 = "Direction = " + str(self.direction)
+        return '\n'.join([s1, s2])
+
+
+class Point(object):
+    """
+    Make an object to represent the intersection point
+    """
+    def __init__(self, point):
+        """ Create new board """
+        self.point = point
+
+    def __str__(self):
+        return str(self.point)
 
 
 class Board(object):
@@ -70,79 +151,6 @@ class Board(object):
     def refresh(self):
         """ Redraw the board once a block has been moved """
         pass
-
-
-class Block(object):
-    """
-    Make an object to represent each individual block
-
-    Use two types of booleans to describe the properties of the block:
-    transmit = True or False
-    reflect = True or False
-
-    For no block, transmit = True, reflect = False
-    Fora reflect block, transmit = False, reflect = True
-    For an opaque block, transmit = False, reflect = False
-    For a refract block, transmit = True, reflect = True
-    """
-    def __init__(self, block_type):
-        """ Create new block """
-        self.block_type = block_type
-        if block_type == "A":
-            self.transmit = False
-            self.reflect = True
-        elif block_type == "B":
-            self.transmit = False
-            self.reflect = False
-        elif block_type == "C":
-            self.transmit = True
-            self.reflect = True
-        else:
-            self.transmit = True
-            self.reflect = False
-
-    def __str__(self):
-        if self.block_type == "A":
-            s1 = "Block Type = Reflect Block"
-        elif self.block_type == "B":
-            s1 = "Block Type = Opaque Block"
-        elif self.block_type == "C":
-            s1 = "Block Type = Reflect Block"
-        else:
-            return "Invalid block type"
-        s2 = "Transmit = " + str(self.transmit)
-        s3 = "Reflect = " + str(self.reflect)
-        return '\n'.join([s1, s2, s3])
-
-
-class Laser(object):
-    """
-    Make an object to represent each laser
-
-    The indices of the laser can tell us if the laser is hitting a vertical
-    position or a horizontal position
-    """
-    def __init__(self, laser):
-        """ Create new board """
-        self.position = (laser[0], laser[1])
-        self.direction = (laser[2], laser[3])
-
-    def __str__(self):
-        s1 = "Position = " + str(self.position)
-        s2 = "Direction = " + str(self.direction)
-        return '\n'.join([s1, s2])
-
-
-class Point(object):
-    """
-    Make an object to represent the intersection point
-    """
-    def __init__(self, point):
-        """ Create new board """
-        self.point = point
-
-    def __str__(self):
-        return str(self.point)
 
 
 def main():

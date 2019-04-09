@@ -51,16 +51,16 @@ def read_bff(filename):
         if "GRID START" in line:
             in_grid = True
         # Parse through the blocks
-        if line[0] == "A":
+        if line[0] == 'A':
             reflect_blocks = [int(s) for s in line if s.isdigit()]
-        elif line[0] == "B":
+        elif line[0] == 'B':
             opaque_blocks = [int(s) for s in line if s.isdigit()]
-        elif line[0] == "C":
+        elif line[0] == 'C':
             refract_blocks = [int(s) for s in line if s.isdigit()]
         # Parse through the lasers and intersection points
-        if line[0] == "L":
+        if line[0] == 'L':
             lasers.append([int(s) for s in findall(r'-?\d', line)])
-        if line[0] == "P":
+        if line[0] == 'P':
             points.append([int(s) for s in line if s.isdigit()])
     # Convert block lists to appropriate ints
     if len(reflect_blocks) > 0:
