@@ -96,13 +96,21 @@ class Point(object):
     """
     This class represents a point on the board where the laser must intersect
     in order to solve the board.
+
+    **Parameters**
+
+        point: *list, int*
+            A list of integers representing the coordinates of the point on
+            the grid.
     """
     def __init__(self, point):
-        """ Create new board """
         self.point = point
 
-    def __str__(self):
+    def __repr__(self):
         return str(self.point)
+
+    def __str__(self):
+        return "The laser must intersect at " + str(self.point)
 
 
 class Board(object):
@@ -118,7 +126,7 @@ class Board(object):
             board.
         valid_positions: *list, boolean*
             A list of True and False parameters corresponding to all of the
-            positions on the board. If the grid_param is True, then a block
+            positions on the board. If valid_positions is True, then a block
             can be placed in that position. If it is False, then that position
             cannot contain a block, or a fixed block exists there already.
     """
@@ -181,8 +189,8 @@ def main():
     fptr = "mad_1.bff"
     # Read and parse through board file
     g, rflb, ob, rfrb, l, p = Read.read_bff(fptr)
-    test = Laser(l[0])
-    print(test)
+    test = Point(p[0])
+    print(repr(test))
 
 
 if __name__ == "__main__":
