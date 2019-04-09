@@ -21,10 +21,19 @@ class Block(object):
         For a reflect block, transmit = False and reflect = True.
         For an opaque block, transmit = False and reflect = False.
         For a refract block, transmit = True and reflect = True.
+
+    **Parameters**
+
+        block_type: *str*
+            The type of the block. 'A' corresponds to the reflect block, 'B'
+            corresponds to the opaque block, and 'C' corresponds to the
+            refract block.
     """
     def __init__(self, block_type):
-        """ Create new block """
+        # Define the type of block
         self.block_type = block_type
+        # Use conditionals to appropriately set the boolean properties of the
+        # block
         if block_type == 'A':
             self.transmit = False
             self.reflect = True
@@ -37,6 +46,12 @@ class Block(object):
         else:
             self.transmit = True
             self.reflect = False
+
+    def __repr__(self):
+        s1 = "block type = " + str(self.block_type)
+        s2 = "transmit = " + str(self.transmit)
+        s3 = "reflect = " + str(self.reflect)
+        return '\n'.join([s1, s2, s3])
 
     def __str__(self):
         if self.block_type == "A":
@@ -157,7 +172,7 @@ def main():
     # Input file name
     fptr = "mad_1.bff"
     # Read and parse through board file
-    g, rflb, ob, rfrb, l, p = read_bff(fptr)
+    g, rflb, ob, rfrb, l, p = Read.read_bff(fptr)
     # Make an instance of the board object and save it in a variable
     grid = Board(g)
     # Make instances of all blocks
@@ -181,3 +196,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    print(repr(reflect_blocks[0]))
