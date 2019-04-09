@@ -38,10 +38,24 @@ class Board(object):
         # print type(self.grid_param[0][0])
         return '\n'.join([s1, s2])
 
-    def place_block(self, Block, position):
+    def pos_check(self, x, y):
+        """ Check if a grid position is valid """
+        return x >= 0 and x < len(self.grid) and y >= 0 and y < len(self.grid[0])
+
+    def place_block(self, Block, pos):
         """ Place a block at a given position """
-        self.grid[position[0]][position[1]] = Block.block_type
-        return self.grid
+        x = pos[0]
+        y = pos[1]
+        # Check if the position is valid
+        if pos_check(self, x, y) and self.grid_param[x][y]:
+            self.grid[x][y] = Block.block_type
+            return self.grid
+        else:
+            return "Invalid position"
+
+    def random_placement(self):
+        """ Calls the place_block function to randomly place blocks """
+        pass
 
     def laser(self):
         """ Specify a laser and the direction it is pointing in """
@@ -227,7 +241,6 @@ def main():
     points = []
     for i in p:
         points.append(i)
-    return grid, reflect_blocks, opaque_blocks, refract_blocks, lasers, points
 
 
 if __name__ == "__main__":
