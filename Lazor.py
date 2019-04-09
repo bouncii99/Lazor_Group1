@@ -12,7 +12,7 @@ class Board(object):
             The list of characters that represents all of the available spots
             on the board. Each list inside the list represents a row of the
             board.
-        grid_param: *list, boolean*
+        valid_positions: *list, boolean*
             A list of True and False parameters corresponding to all of the
             positions on the board. If the grid_param is True, then a block
             can be placed in that position. If it is False, then that position
@@ -30,11 +30,11 @@ class Board(object):
                 else:
                     x2.append(False)
             x1.append(x2)
-        self.grid_param = x1
+        self.valid_positions = x1
 
     def __str__(self):
         s1 = "grid = " + str(self.grid)
-        s2 = "grid_param = " + str(self.grid_param)
+        s2 = "valid positions = " + str(self.valid_positions)
         # print type(self.grid_param[0][0])
         return '\n'.join([s1, s2])
 
@@ -47,7 +47,7 @@ class Board(object):
         x = pos[0]
         y = pos[1]
         # Check if the position is valid
-        if pos_check(self, x, y) and self.grid_param[x][y]:
+        if pos_check(self, x, y) and self.valid_positions[x][y]:
             self.grid[x][y] = Block.block_type
             return self.grid
         else:
