@@ -131,18 +131,20 @@ class Board(object):
             cannot contain a block, or a fixed block exists there already.
     """
     def __init__(self, grid):
+        # Define grid
         self.grid = grid
-        x1 = []
+        # Generate list of valid positions
+        pos_temp = []
         for i in range(len(grid)):
             col_id = grid[i]
-            x2 = []
+            bool_temp = []
             for j in range(len(col_id)):
                 if col_id[j] == "o":
-                    x2.append(True)
+                    bool_temp.append(True)
                 else:
-                    x2.append(False)
-            x1.append(x2)
-        self.valid_positions = x1
+                    bool_temp.append(False)
+            pos_temp.append(bool_temp)
+        self.valid_positions = pos_temp
 
     def __str__(self):
         s1 = "grid = " + str(self.grid)
