@@ -18,7 +18,6 @@ class Board(object):
             can be placed in that position. If it is False, then that position
             cannot contain a block, or a fixed block exists there already.
     """
-
     def __init__(self, grid):
         self.grid = grid
         x1 = []
@@ -32,7 +31,6 @@ class Board(object):
                     x2.append(False)
             x1.append(x2)
         self.grid_param = x1
-        # self.grid_param[0][0] = False
 
     def __str__(self):
         s1 = "grid = " + str(self.grid)
@@ -40,13 +38,10 @@ class Board(object):
         # print type(self.grid_param[0][0])
         return '\n'.join([s1, s2])
 
-    def board_id(grid):
-        pass
-
-
-    def place_block(self):
+    def place_block(self, Block, position):
         """ Place a block at a given position """
-        pass
+        self.grid[position[0]][position[1]] = Block.block_type
+        return self.grid
 
     def laser(self):
         """ Specify a laser and the direction it is pointing in """
@@ -209,7 +204,7 @@ def read_bff(filename):
     return grid, reflect_blocks, opaque_blocks, refract_blocks, lasers, points
 
 
-if __name__ == "__main__":
+def main():
     # Input file name
     fptr = "mad_1.bff"
     # Read and parse through board file
@@ -232,3 +227,8 @@ if __name__ == "__main__":
     points = []
     for i in p:
         points.append(i)
+    return grid, reflect_blocks, opaque_blocks, refract_blocks, lasers, points
+
+
+if __name__ == "__main__":
+    main()
