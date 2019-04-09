@@ -1,3 +1,6 @@
+"""
+This Python file reads in a BFF file as specified by the user.
+"""
 from re import findall
 
 
@@ -75,8 +78,26 @@ def read_bff(filename):
     return grid, reflect_blocks, opaque_blocks, refract_blocks, lasers, points
 
 
-if __name__ == "__main__":
+def main():
     # Input file name
     fptr = "mad_1.bff"
     # Read and parse through board file
     g, rflb, ob, rfrb, l, p = read_bff(fptr)
+    # Print parsed data
+    print("Grid:")
+    for i in g:
+        print(str(i))
+    print("\nBlocks available to be placed:")
+    print(str(rflb) + " reflect blocks")
+    print(str(ob) + " opaque blocks")
+    print(str(rfrb) + " refract blocks\n")
+    print("Lasers:")
+    for i in l:
+        print(str(l))
+    print("\nPoints where the lasers must intersect:")
+    for i in p:
+        print(str(i))
+
+
+if __name__ == "__main__":
+    main()
