@@ -65,7 +65,7 @@ class Block(object):
 
 class Laser(object):
     """
-    This class represents each laser on the board.
+    This class represents a laser on the board.
 
     **Parameters**
 
@@ -94,7 +94,8 @@ class Laser(object):
 
 class Point(object):
     """
-    Make an object to represent the intersection point
+    This class represents a point on the board where the laser must intersect
+    in order to solve the board.
     """
     def __init__(self, point):
         """ Create new board """
