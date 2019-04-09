@@ -54,17 +54,14 @@ class Block(object):
         return '\n'.join([s1, s2, s3])
 
     def __str__(self):
-        if self.block_type == "A":
-            s1 = "Block Type = Reflect Block"
-        elif self.block_type == "B":
-            s1 = "Block Type = Opaque Block"
+        if self.block_type == 'A':
+            return "This block is a reflect block."
+        elif self.block_type == 'B':
+            return "This block is an opaque block."
         elif self.block_type == "C":
-            s1 = "Block Type = Reflect Block"
+            return "This block is a reflect block."
         else:
-            return "Invalid block type"
-        s2 = "Transmit = " + str(self.transmit)
-        s3 = "Reflect = " + str(self.reflect)
-        return '\n'.join([s1, s2, s3])
+            return "This is not a block."
 
 
 class Laser(object):
@@ -173,27 +170,9 @@ def main():
     fptr = "mad_1.bff"
     # Read and parse through board file
     g, rflb, ob, rfrb, l, p = Read.read_bff(fptr)
-    # Make an instance of the board object and save it in a variable
-    grid = Board(g)
-    # Make instances of all blocks
-    reflect_blocks, opaque_blocks, refract_blocks = [], [], []
-    for i in range(rflb):
-        reflect_blocks.append(Block("A"))
-    for i in range(ob):
-        opaque_blocks.append(Block("B"))
-    for i in range(rfrb):
-        refract_blocks.append(Block("C"))
-    # Make instances of the lasers
-    lasers = []
-    for i in l:
-        lasers.append(Laser(i))
-    # Make instances of the points
-    points = []
-    for i in p:
-        points.append(i)
-    return grid, reflect_blocks, opaque_blocks, refract_blocks, lasers, points
+    test = Block(0)
+    print(test)
 
 
 if __name__ == "__main__":
     main()
-    print(repr(reflect_blocks[0]))
