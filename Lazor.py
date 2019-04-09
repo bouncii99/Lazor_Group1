@@ -1,7 +1,7 @@
 import re
 
 
-class Board:
+class Board(object):
     """
     The Board class represents the entire Lazors game board, including the
     lasers, blocks, and desired intersection points.
@@ -40,15 +40,8 @@ class Board:
         # print type(self.grid_param[0][0])
         return '\n'.join([s1, s2])
 
-    # def __str__(self):
-    #     """ String representation of the object """
-    #     pass
-
     def board_id(grid):
         pass
-                
-
-
 
 
     def place_block(self):
@@ -69,7 +62,7 @@ class Board:
         pass
 
 
-class Block:
+class Block(object):
     """
     Make an object to represent each individual block
 
@@ -84,6 +77,7 @@ class Block:
     """
     def __init__(self, block_type):
         """ Create new block """
+        self.block_type = block_type
         if block_type == "A":
             self.transmit = False
             self.reflect = True
@@ -97,16 +91,21 @@ class Block:
             self.transmit = True
             self.reflect = False
 
-    def __repr__(self):
-        """ Representation of the object for debugging """
-        pass
-
     def __str__(self):
-        """ String representation of the object """
-        pass
+        if self.block_type == "A":
+            s1 = "Block Type = Reflect Block"
+        elif self.block_type == "B":
+            s1 = "Block Type = Opaque Block"
+        elif self.block_type == "C":
+            s1 = "Block Type = Reflect Block"
+        else:
+            return "Invalid block type"
+        s2 = "Transmit = " + str(self.transmit)
+        s3 = "Reflect = " + str(self.reflect)
+        return '\n'.join([s1, s2, s3])
 
 
-class Laser:
+class Laser(object):
     """
     Make an object to represent each laser
 
@@ -115,18 +114,16 @@ class Laser:
     """
     def __init__(self, laser):
         """ Create new board """
-        self.laser = laser
-
-    def __repr__(self):
-        """ Representation of the object for debugging """
-        pass
+        self.position = (laser[0], laser[1])
+        self.direction = (laser[2], laser[3])
 
     def __str__(self):
-        """ String representation of the object """
-        pass
+        s1 = "Position = " + str(self.position)
+        s2 = "Direction = " + str(self.direction)
+        return '\n'.join([s1, s2])
 
 
-class Point:
+class Point(object):
     """
     Make an object to represent the intersection point
     """
@@ -134,13 +131,8 @@ class Point:
         """ Create new board """
         self.point = point
 
-    def __repr__(self):
-        """ Representation of the object for debugging """
-        pass
-
     def __str__(self):
-        """ String representation of the object """
-        pass
+        return str(self.point)
 
 
 def read_bff(filename):
@@ -223,9 +215,20 @@ if __name__ == "__main__":
     # Read and parse through board file
     g, rflb, ob, rfrb, l, p = read_bff(fptr)
     # Make an instance of the board object and save it in a variable
-    print Board(g)
+    grid = Board(g)
     # Make instances of all blocks
-
+    reflect_blocks, opaque_blocks, refract_blocks = [], [], []
+    for i in range(rflb):
+        reflect_blocks.append(Block("A"))
+    for i in range(ob):
+        opaque_blocks.append(Block("B"))
+    for i in range(rfrb):
+        refract_blocks.append(Block("C"))
     # Make instances of the lasers
-
+    lasers = []
+    for i in l:
+        lasers.append(Laser(i))
     # Make instances of the points
+    points = []
+    for i in p:
+        points.append(i)
