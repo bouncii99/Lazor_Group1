@@ -35,7 +35,10 @@ def solve(board):
 	# INPUT FUNCTION/CODE TO PLACE BLOCKS HERE
     # Initialize whatever is necessary to initialize
     # while(all_positions != Filled):
-    	# move blocks to a new random positions
+    	# move blocks to a new random positions along with the following criteria:
+            # The original lasers must intersect with one of the blocks
+            # The positions cannot have been tested already
+            # If in the previous position, a laser is being reflected/refracted, keep that block in the same position and only randomly move the other blocks
     	# Refresh board
 	"""
 	pass
