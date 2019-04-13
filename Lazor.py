@@ -2,6 +2,7 @@
 This file contains the class definitions for the blocks, lasers, intersection
 points, and the board itself.
 """
+import random
 import numpy as np
 import Read
 
@@ -45,7 +46,7 @@ class Block(object):
             self.reflect = True
         else:
             self.transmit = True
-            self.reflect = False
+            self.reflect = False       
 
     def __repr__(self):
         s1 = "block type = " + str(self.block_type)
@@ -74,6 +75,12 @@ class Laser(object):
             A list of integers representing the laser. The first two integers
             correspond to the position of the laser and the last two integers
             correspond to the direction it is pointing in.
+        xbound: *int*
+            The rightmost boundary of the grid. This value is used to specify
+            the possible domain of points that the laser intersects.
+        ybound: *int*
+            The bottom boundary of the grid. This value is used to specify
+            the possible range of points that the laser intersects.
     """
     def __init__(self, laser, xbound, ybound):
         # Define position and direction as given
@@ -86,13 +93,16 @@ class Laser(object):
         # Define the laser as a linear equation: y = mx + c
         x2 = x + vx
         y2 = y + vy
-        m = (y2 - y) / (x2 - x)
-        c = y - (m * x)
-        # Initialize an list to represent the points on the line
+        self.m = (y2 - y) / (x2 - x)
+        self.c = y - (self.m * x)
+        # Represent the line as all the points that make up the line that are
+        # within the grid
         laser_points = []
-        for i in range(2 * xbound + 2):
-            j = m * i + c
-            if j >= 0 and j <= 2 * ybound + 2:
+        xmax = 2 * xbound + 2
+        ymax = 2 * ybound + 2
+        for i in range(xmax):
+            j = self.m * i + self.c
+            if j >= 0 and j <= ymax:
                 coordinates = (i, j)
                 laser_points.append(coordinates)
         self.laser_points = laser_points
@@ -100,7 +110,10 @@ class Laser(object):
     def __repr__(self):
         s1 = "position = " + str(self.position)
         s2 = "direction = " + str(self.direction)
-        return '\n'.join([s1, s2])
+        s3 = "slope = " + str(self.m)
+        s4 = "y-int = " + str(self.c)
+        s5 = "laser points = " + str(self.laser_points)
+        return '\n'.join([s1, s2, s3, s4, s5])
 
     def __str__(self):
         unit_vectors = [(1, 1), (1, -1), (-1, -1), (-1, 1)]
@@ -108,7 +121,8 @@ class Laser(object):
         i = unit_vectors.index(self.direction)
         s1 = "This laser starts at position " + str(self.position)
         s2 = "and is pointing " + d[i] + "."
-        return ' '.join([s1, s2])
+        s3 = "This is represented by the line y = " + m + "x + " + c
+        return ' '.join([s1, s2, s3])
 
 
 class Point(object):
@@ -123,6 +137,7 @@ class Point(object):
             the grid.
     """
     def __init__(self, point):
+        point = p
         self.point = point
 
     def __repr__(self):
@@ -169,8 +184,8 @@ class Board(object):
             pos_temp.append(bool_temp)
         self.valid_positions = pos_temp
         # Define dimensions
-        self.xmax = len(self.grid[0])
-        self.ymax = len(self.grid)
+        self.xmax = len(self.grid[0]) - 1
+        self.ymax = len(self.grid) - 1
         # Initialize lasers
         l = []
         for i in lasers:
@@ -206,11 +221,10 @@ class Board(object):
 
     def random_placement(self):
         """ Calls the place_block function to randomly place blocks """
-        x = np.random.choice([range(len(self.grid[0]))], True)
-        y = np.random.choice([range(len(self.grid))], True)
+        x = random.randint([range(len(self.grid[0]))])
+        y = random.randint([range(len(self.grid))])
         pos = (x, y)
-        # return self.pos
-        print (type(x), type(y))
+        return self.pos
 
     def point(self):
         """ Define point where the laser has to intersect """
@@ -227,7 +241,6 @@ def main():
     # Read and parse through board file
     g, rflb, ob, rfrb, l, p = Read.read_bff(fptr)
     test_board = Board(g, l)
-
 
 if __name__ == "__main__":
     main()
