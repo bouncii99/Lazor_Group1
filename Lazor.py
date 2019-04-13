@@ -2,8 +2,8 @@
 This file contains the class definitions for the blocks, lasers, intersection
 points, and the board itself.
 """
-import Read
 import numpy as np
+import Read
 
 
 class Block(object):
@@ -76,15 +76,30 @@ class Laser(object):
             correspond to the direction it is pointing in.
     """
     def __init__(self, laser):
-        self.position = (laser[0], laser[1])
-        self.direction = (laser[2], laser[3])
-        # Define laser as linear equation
-        # y = mx + c, x= laser[0], y= laser[1]
-        # m = (y2-y1)/(x2-x1), c = y - mx
-        # m = (laser[3] - laser[1])/(laser[2] - laser[0])
-        # c = laser[1] - (m * laser[0])
-        # laserdir_y = (m * laserdir_x) + c
-        
+        # Define position and direction as given
+        x = laser[0]
+        y = laser[1]
+        vx = laser[2]
+        vy = laser[3]
+        self.position = (x, y)
+        self.direction = (vx, vy)
+        # Define the laser as linear equation
+        x2 = x + vx
+        y2 = y + vy
+        m = (y2 - y) / (x2 - x)
+        c = y - (m * x)
+        laser_points = []
+        laserdir_x = len(self.grid[0])
+        in_grid = True
+        while in_grid:
+            for j in (2*(range(laserdir_x))):
+                laserdir_y = m * j + c
+                if (Board.pos_check(self, x, y)):
+                    laser_coord = (laserdir_x, laserdir_y)
+                    laser_points.append(laser_coord)
+                else:
+                    in_grid = False
+                    break
         
     def __repr__(self):
         s1 = "position = " + str(self.position)
@@ -165,7 +180,7 @@ class Board(object):
         for i in lasers:
             l.append(Laser(i))
         self.lasers = l
-
+    
     def __repr__(self):
         s1 = "grid: " + str(self.grid)
         s2 = "valid positions: " + str(self.valid_positions)
