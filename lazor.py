@@ -3,7 +3,6 @@ This file contains the class definitions for the blocks, lasers, intersection
 points, and the board itself.
 """
 import random
-import read
 
 
 class Block(object):
@@ -202,8 +201,22 @@ class Board(object):
             temp = Board.place_block(self, Block, pos)
             if temp != -1:
                 break
+        return pos
 
-    def refresh(self):
-        """ Redraw the board once a block has been moved """
-        
-        pass
+    def generate_board(self):
+        """
+        1. Randomly place all blocks
+        2. Determine position of all blocks
+        3. For each block, check if it intersects with a block.
+        4. Determine new laser path.
+        5. Check if all points are satisfied
+        6. Repeat and discount the old position from the new possible combinations
+        If possible, bias refract block to be near the centre of the grid
+        """
+        for i, j in enumerate(self.blocks):
+            # Randomly place the block on the board
+            pos = Board.random_placement(self, j)
+            # Retrieve the position at which the block has been placed
+            block_center = [2 * i + 1 for i in pos]
+            raise Exception
+            

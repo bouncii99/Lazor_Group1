@@ -11,9 +11,7 @@ def solve(filename):
     # Initialize board class
     grid = Board(g, l, p, rflb, ob, rfrb)
     # Initialize blocks by placing them randomly on the board
-    for i in grid.blocks:
-        Board.random_placement(grid, i)
-    print(grid)
+    Board.generate_board(grid)
     #Board.random_placement(grid, )
     # From the blocks that are available, place them in random spots on the
     # board
@@ -28,5 +26,5 @@ def solve(filename):
 
 if __name__ == "__main__":
 	# Input file name
-    fptr = "yarn_5.bff"
+    fptr = "mad_4.bff"
     solve(fptr)
