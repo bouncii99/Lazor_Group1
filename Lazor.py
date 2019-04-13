@@ -4,6 +4,7 @@ points, and the board itself.
 """
 import Read
 import numpy as np
+import random
 
 
 class Block(object):
@@ -172,9 +173,8 @@ class Board(object):
 
     def random_placement(self):
         """ Calls the place_block function to randomly place blocks """
-        x_upper = 
-        x = np.random.choice([range(len(self.grid[0]))], True)
-        y = np.random.choice([range(len(self.grid[0]))], True)
+        x = random.randint(0, len(self.grid[0]))
+        y = random.randint(0, len(self.grid))
         # return self.x, self.y
         print (type(x), type(y))
 
