@@ -3,8 +3,7 @@ This file contains the class definitions for the blocks, lasers, intersection
 points, and the board itself.
 """
 import random
-import numpy as np
-import Read
+import read
 
 
 class Block(object):
@@ -125,26 +124,26 @@ class Laser(object):
         return ' '.join([s1, s2, s3])
 
 
-class Point(object):
-    """
-    This class represents a point on the board where the laser must intersect
-    in order to solve the board.
+# class Point(object):
+#     """
+#     This class represents a point on the board where the laser must intersect
+#     in order to solve the board.
 
-    **Parameters**
+#     **Parameters**
 
-        point: *list, int*
-            A list of integers representing the coordinates of the point on
-            the grid.
-    """
-    def __init__(self, point):
-        point = p
-        self.point = point
+#         point: *list, int*
+#             A list of integers representing the coordinates of the point on
+#             the grid.
+#     """
+#     def __init__(self, point):
+#           point = p
+#         self.point = point
 
-    def __repr__(self):
-        return str(self.point)
+#     def __repr__(self):
+#         return str(self.point)
 
-    def __str__(self):
-        return "The laser must intersect at " + str(self.point)
+#     def __str__(self):
+#         return "The laser must intersect at " + str(self.point)
 
 
 class Board(object):
@@ -219,12 +218,13 @@ class Board(object):
         else:
             print("Invalid position")
 
-    def random_placement(self):
+    def random_placement(self, Block):
         """ Calls the place_block function to randomly place blocks """
-        x = random.randint([range(len(self.grid[0]))])
-        y = random.randint([range(len(self.grid))])
+        x = random.randint(range(self.xmax))
+        y = random.randint(range(self.ymax))
         pos = (x, y)
-        return self.pos
+        Board.place_block(Block, pos)
+        # return self.pos
 
     def point(self):
         """ Define point where the laser has to intersect """
@@ -239,8 +239,9 @@ def main():
     # Input file name
     fptr = "showstopper_4.bff"
     # Read and parse through board file
-    g, rflb, ob, rfrb, l, p = Read.read_bff(fptr)
+    g, rflb, ob, rfrb, l, p = read.read_bff(fptr)
     test_board = Board(g, l)
+
 
 if __name__ == "__main__":
     main()
