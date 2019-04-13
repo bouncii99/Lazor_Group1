@@ -1,35 +1,20 @@
 """
 Solving algorithm
 """
-import lazor
-
-# def main():
-#     # Input file name
-#     fptr = "mad_1.bff"
-#     # Read and parse through board file
-#     g, rflb, ob, rfrb, l, p = Read.read_bff(fptr)
-#     # Make an instance of the board object and save it in a variable
-#     grid = Board(g)
-#     # Make instances of all blocks
-#     reflect_blocks, opaque_blocks, refract_blocks = [], [], []
-#     for i in range(rflb):
-#         reflect_blocks.append(Block("A"))
-#     for i in range(ob):
-#         opaque_blocks.append(Block("B"))
-#     for i in range(rfrb):
-#         refract_blocks.append(Block("C"))
-#     # Make instances of the lasers
-#     lasers = []
-#     for i in l:
-#         lasers.append(Laser(i))
-#     # Make instances of the points
-#     points = []
-#     for i in p:
-#         points.append(i)
-#     return grid, reflect_blocks, opaque_blocks, refract_blocks, lasers, points
+import read
+from lazor import Board
 
 
-def solve(board):
+def solve(filename):
+    # Read and parse through board file
+    g, rflb, ob, rfrb, l, p = read.read_bff(filename)
+    # Initialize board class
+    grid = Board(g, l, p, rflb, ob, rfrb)
+    # Initialize blocks by placing them randomly on the board
+    for i in grid.blocks:
+        Board.random_placement(grid, i)
+    print(grid)
+    #Board.random_placement(grid, )
     # From the blocks that are available, place them in random spots on the
     # board
 	# INPUT FUNCTION/CODE TO PLACE BLOCKS HERE
@@ -40,8 +25,8 @@ def solve(board):
             # The positions cannot have been tested already
             # If in the previous position, a laser is being reflected/refracted, keep that block in the same position and only randomly move the other blocks
     	# Refresh board
-	"""
-	pass
 
 if __name__ == "__main__":
-	print(Lazor.read_bff("mad_1.bff"))
+	# Input file name
+    fptr = "yarn_5.bff"
+    solve(fptr)

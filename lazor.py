@@ -59,7 +59,7 @@ class Block(object):
         elif self.block_type == 'B':
             return "This block is an opaque block."
         elif self.block_type == "C":
-            return "This block is a reflect block."
+            return "This block is a refract block."
         else:
             return "This is not a block."
 
@@ -138,17 +138,8 @@ class Board(object):
             The list of characters that represents all of the available spots
             on the board. Each list inside the list represents a row of the
             board.
-        valid_positions: *list, boolean*
-            A list of True and False parameters corresponding to all of the
-            positions on the board. If valid_positions is True, then a block
-            can be placed in that position. If it is False, then that position
-            cannot contain a block, or a fixed block exists there already.
-        xmax: *int*
-            The maximum range of the grid in the x-direction.
-        ymax: *int*
-            The maximum range of the grid in the y-direction.
     """
-    def __init__(self, grid, lasers, points):
+    def __init__(self, grid, lasers, points, reflect, opaque, refract):
         # Define grid
         self.grid = grid
         # Define dimensions
@@ -164,7 +155,17 @@ class Board(object):
         for i in points:
             p.append(i)
         self.points = p
-    
+        # Initialize blocks available for placement
+        blocks = []
+        for i in range(reflect):
+            blocks.append(Block("A"))
+        for i in range(opaque):
+            blocks.append(Block("B"))
+        for i in range(refract):
+            blocks.append(Block("C"))
+        self.blocks = blocks
+
+
     def __repr__(self):
         s1 = "grid: " + str(self.grid)
         s2 = "xmax = " + str(self.xmax)
@@ -179,7 +180,7 @@ class Board(object):
     
     def pos_check(self, x, y):
         """ Check if a grid position is valid """
-        return x >= 0 and x < self.xmax and y >= 0 and y < self.ymax
+        return x >= 0 and x <= self.xmax and y >= 0 and y <= self.ymax
 
     def place_block(self, Block, pos):
         """ Place a block at a given position """
@@ -190,30 +191,19 @@ class Board(object):
             self.grid[y][x] = Block.block_type
             return self.grid
         else:
-            print("Invalid position")
+            return -1
 
     def random_placement(self, Block):
         """ Calls the place_block function to randomly place blocks """
-        x = random.randint(range(self.xmax))
-        y = random.randint(range(self.ymax))
-        pos = (x, y)
-        Board.place_block(Block, pos)
-        # return self.pos
+        while True:
+            x = random.randint(0, self.xmax)
+            y = random.randint(0, self.ymax)
+            pos = (x, y)
+            temp = Board.place_block(self, Block, pos)
+            if temp != -1:
+                break
 
     def refresh(self):
         """ Redraw the board once a block has been moved """
+        
         pass
-
-
-def main():
-    # Input file name
-    fptr = "yarn_5.bff"
-    # Read and parse through board file
-    g, rflb, ob, rfrb, l, p = read.read_bff(fptr)
-    test_board = Board(g, l, p)
-    test_block = Block("A")
-    Board.place_block(test_board, test_block, (0, 1))
-    print(test_board)
-
-if __name__ == "__main__":
-    main()
