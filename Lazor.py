@@ -4,7 +4,6 @@ points, and the board itself.
 """
 import Read
 import numpy as np
-import random
 
 
 class Block(object):
@@ -33,7 +32,7 @@ class Block(object):
     def __init__(self, block_type):
         # Define the type of block
         self.block_type = block_type
-        # Use conditionals to appropriately set the boolean properties of the
+        # Use conditionals to appropriately set the Boolean properties of the
         # block
         if block_type == 'A':
             self.transmit = False
@@ -147,10 +146,15 @@ class Board(object):
                     bool_temp.append(False)
             pos_temp.append(bool_temp)
         self.valid_positions = pos_temp
-
+    
+    def __repr__(self):
+        s1 = "grid: " + str(self.grid)
+        s2 = "valid positions: " + str(self.valid_positions)
+        return '\n'.join([s1, s2])
+      
     def __str__(self):
-        s1 = "grid = " + str(self.grid)
-        s2 = "valid positions = " + str(self.valid_positions)
+        s1 = "The current board is " + str(self.grid)
+        s2 = "The valid positions for the board are " + str(self.valid_positions)
         return '\n'.join([s1, s2])
 
     def pos_check(self, x, y):
@@ -173,8 +177,8 @@ class Board(object):
 
     def random_placement(self):
         """ Calls the place_block function to randomly place blocks """
-        x = random.randint(0, len(self.grid[0]))
-        y = random.randint(0, len(self.grid))
+        x = np.random.choice([range(len(self.grid[0]))], True)
+        y = np.random.choice([range(len(self.grid[0]))], True)
         # return self.x, self.y
         print (type(x), type(y))
 
@@ -197,11 +201,8 @@ def main():
     fptr = "showstopper_4.bff"
     # Read and parse through board file
     g, rflb, ob, rfrb, l, p = Read.read_bff(fptr)
-    test = Point(p[0])
-    print(repr(test))
-    grid = Board(g)
-    print grid
-    Board.random_placement(grid)
+    test = Board(g)
+    print test
 
 
 if __name__ == "__main__":
