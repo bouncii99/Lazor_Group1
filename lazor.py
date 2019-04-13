@@ -120,30 +120,8 @@ class Laser(object):
         i = unit_vectors.index(self.direction)
         s1 = "This laser starts at position " + str(self.position)
         s2 = "and is pointing " + d[i] + "."
-        s3 = "This is represented by the line y = " + m + "x + " + c
+        s3 = "This laser is represented by the line y = " + str(self.m) + "x + " + str(self.c)
         return ' '.join([s1, s2, s3])
-
-
-# class Point(object):
-#     """
-#     This class represents a point on the board where the laser must intersect
-#     in order to solve the board.
-
-#     **Parameters**
-
-#         point: *list, int*
-#             A list of integers representing the coordinates of the point on
-#             the grid.
-#     """
-#     def __init__(self, point):
-#           point = p
-#         self.point = point
-
-#     def __repr__(self):
-#         return str(self.point)
-
-#     def __str__(self):
-#         return "The laser must intersect at " + str(self.point)
 
 
 class Board(object):
@@ -167,21 +145,9 @@ class Board(object):
         ymax: *int*
             The maximum range of the grid in the y-direction.
     """
-    def __init__(self, grid, lasers):
+    def __init__(self, grid, lasers, points):
         # Define grid
         self.grid = grid
-        # Generate list of valid positions
-        pos_temp = []
-        for i in range(len(grid)):
-            col_id = grid[i]
-            bool_temp = []
-            for j in range(len(col_id)):
-                if col_id[j] == "o":
-                    bool_temp.append(True)
-                else:
-                    bool_temp.append(False)
-            pos_temp.append(bool_temp)
-        self.valid_positions = pos_temp
         # Define dimensions
         self.xmax = len(self.grid[0]) - 1
         self.ymax = len(self.grid) - 1
@@ -190,17 +156,23 @@ class Board(object):
         for i in lasers:
             l.append(Laser(i, self.xmax, self.ymax))
         self.lasers = l
+        # Initialize intersection points
+        p = []
+        for i in points:
+            p.append(i)
+        self.points = p
     
     def __repr__(self):
         s1 = "grid: " + str(self.grid)
-        s2 = "valid positions: " + str(self.valid_positions)
-        s3 = "lasers: " + str(self.lasers)
-        return '\n'.join([s1, s2, s3])
+        s2 = "xmax = " + str(self.xmax)
+        s3 = "ymax = " + str(self.ymax)
+        s4 = "lasers:\n" + str(self.lasers)
+        s5 = "points:\n" + str(self.points)
+        return '\n'.join([s1, s2, s3, s4, s5])
       
     def __str__(self):
         s1 = "The current board is " + str(self.grid)
-        s2 = "The valid positions for the board are " + str(self.valid_positions)
-        return '\n'.join([s1, s2])
+        return '\n'.join([s1])
     
     def pos_check(self, x, y):
         """ Check if a grid position is valid """
@@ -226,10 +198,6 @@ class Board(object):
         Board.place_block(Block, pos)
         # return self.pos
 
-    def point(self):
-        """ Define point where the laser has to intersect """
-        pass
-
     def refresh(self):
         """ Redraw the board once a block has been moved """
         pass
@@ -240,8 +208,8 @@ def main():
     fptr = "showstopper_4.bff"
     # Read and parse through board file
     g, rflb, ob, rfrb, l, p = read.read_bff(fptr)
-    test_board = Board(g, l)
-
+    test_board = Board(g, l, p)
+    print(test_board)
 
 if __name__ == "__main__":
     main()
