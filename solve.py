@@ -1,7 +1,7 @@
 """
 Solving algorithm
 """
-import Lazor
+import lazor
 
 def main():
     # Input file name
