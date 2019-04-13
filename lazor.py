@@ -99,11 +99,14 @@ class Laser(object):
         laser_points = []
         xmax = 2 * xbound + 2
         ymax = 2 * ybound + 2
-        for i in range(xmax):
-            j = self.m * i + self.c
-            if j >= 0 and j <= ymax:
-                coordinates = (i, j)
-                laser_points.append(coordinates)
+        while True:
+            pos = [x, y]
+            if x >= 0 and x <= xmax and y >= 0 and y <= ymax:
+                laser_points.append(pos)
+            else:
+                break
+            x += vx
+            y += vy
         self.laser_points = laser_points
         
     def __repr__(self):
@@ -171,8 +174,8 @@ class Board(object):
         return '\n'.join([s1, s2, s3, s4, s5])
       
     def __str__(self):
-        s1 = "The current board is " + str(self.grid)
-        return '\n'.join([s1])
+        s1 = str(self.grid)
+        return s1
     
     def pos_check(self, x, y):
         """ Check if a grid position is valid """
@@ -183,10 +186,9 @@ class Board(object):
         x = pos[0]
         y = pos[1]
         # Check if the position is valid
-        if Board.pos_check(self, x, y) and self.valid_positions[x][y]:
-            self.grid[x][y] = Block.block_type
-            self.valid_positions[x][y] = False
-            return self.grid, self.valid_positions
+        if Board.pos_check(self, x, y) and self.grid[y][x] == 'o':
+            self.grid[y][x] = Block.block_type
+            return self.grid
         else:
             print("Invalid position")
 
@@ -205,10 +207,12 @@ class Board(object):
 
 def main():
     # Input file name
-    fptr = "showstopper_4.bff"
+    fptr = "yarn_5.bff"
     # Read and parse through board file
     g, rflb, ob, rfrb, l, p = read.read_bff(fptr)
     test_board = Board(g, l, p)
+    test_block = Block("A")
+    Board.place_block(test_board, test_block, (0, 1))
     print(test_board)
 
 if __name__ == "__main__":
