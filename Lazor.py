@@ -3,6 +3,7 @@ This file contains the class definitions for the blocks, lasers, intersection
 points, and the board itself.
 """
 import Read
+import numpy as np
 
 
 class Block(object):
@@ -164,13 +165,18 @@ class Board(object):
         # Check if the position is valid
         if Board.pos_check(self, x, y) and self.valid_positions[x][y]:
             self.grid[x][y] = Block.block_type
-            return self.grid
+            self.valid_positions[x][y] = False
+            return self.grid, self.valid_positions
         else:
             return "Invalid position"
 
     def random_placement(self):
         """ Calls the place_block function to randomly place blocks """
-        pass
+        x_upper = 
+        x = np.random.choice([range(len(self.grid[0]))], True)
+        y = np.random.choice([range(len(self.grid[0]))], True)
+        # return self.x, self.y
+        print (type(x), type(y))
 
     def laser(self):
         """ Specify a laser and the direction it is pointing in """
@@ -188,11 +194,14 @@ class Board(object):
 
 def main():
     # Input file name
-    fptr = "mad_1.bff"
+    fptr = "showstopper_4.bff"
     # Read and parse through board file
     g, rflb, ob, rfrb, l, p = Read.read_bff(fptr)
     test = Point(p[0])
     print(repr(test))
+    grid = Board(g)
+    print grid
+    Board.random_placement(grid)
 
 
 if __name__ == "__main__":
