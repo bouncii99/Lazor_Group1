@@ -78,7 +78,14 @@ class Laser(object):
     def __init__(self, laser):
         self.position = (laser[0], laser[1])
         self.direction = (laser[2], laser[3])
-
+        # Define laser as linear equation
+        # y = mx + c, x= laser[0], y= laser[1]
+        # m = (y2-y1)/(x2-x1), c = y - mx
+        # m = (laser[3] - laser[1])/(laser[2] - laser[0])
+        # c = laser[1] - (m * laser[0])
+        # laserdir_y = (m * laserdir_x) + c
+        
+        
     def __repr__(self):
         s1 = "position = " + str(self.position)
         s2 = "direction = " + str(self.direction)
@@ -130,8 +137,12 @@ class Board(object):
             positions on the board. If valid_positions is True, then a block
             can be placed in that position. If it is False, then that position
             cannot contain a block, or a fixed block exists there already.
+        xmax: *int*
+            The maximum range of the grid in the x-direction.
+        ymax: *int*
+            The maximum range of the grid in the y-direction.
     """
-    def __init__(self, grid):
+    def __init__(self, grid, lasers):
         # Define grid
         self.grid = grid
         # Generate list of valid positions
@@ -146,22 +157,29 @@ class Board(object):
                     bool_temp.append(False)
             pos_temp.append(bool_temp)
         self.valid_positions = pos_temp
-    
+        # Define dimensions
+        self.xmax = len(self.grid[0])
+        self.ymax = len(self.grid)
+        # Initialize lasers
+        l = []
+        for i in lasers:
+            l.append(Laser(i))
+        self.lasers = l
+
     def __repr__(self):
         s1 = "grid: " + str(self.grid)
         s2 = "valid positions: " + str(self.valid_positions)
-        return '\n'.join([s1, s2])
+        s3 = "lasers: " + str(self.lasers)
+        return '\n'.join([s1, s2, s3])
       
     def __str__(self):
         s1 = "The current board is " + str(self.grid)
         s2 = "The valid positions for the board are " + str(self.valid_positions)
         return '\n'.join([s1, s2])
-
+    
     def pos_check(self, x, y):
         """ Check if a grid position is valid """
-        x_max = len(self.grid)
-        y_max = len(self.grid[0])
-        return x >= 0 and x < x_max and y >= 0 and y < y_max
+        return x >= 0 and x < self.xmax and y >= 0 and y < self.ymax
 
     def place_block(self, Block, pos):
         """ Place a block at a given position """
@@ -173,19 +191,15 @@ class Board(object):
             self.valid_positions[x][y] = False
             return self.grid, self.valid_positions
         else:
-            return "Invalid position"
+            print("Invalid position")
 
     def random_placement(self):
         """ Calls the place_block function to randomly place blocks """
         x = np.random.choice([range(len(self.grid[0]))], True)
-        y = np.random.choice([range(len(self.grid[0]))], True)
-        # return self.x, self.y
+        y = np.random.choice([range(len(self.grid))], True)
+        pos = (x, y)
+        # return self.pos
         print (type(x), type(y))
-
-    def laser(self):
-        """ Specify a laser and the direction it is pointing in """
-        # Laser can be represented by a system of lines/linear equations
-        pass
 
     def point(self):
         """ Define point where the laser has to intersect """
@@ -201,8 +215,7 @@ def main():
     fptr = "showstopper_4.bff"
     # Read and parse through board file
     g, rflb, ob, rfrb, l, p = Read.read_bff(fptr)
-    test = Board(g)
-    print test
+    test_board = Board(g, l)
 
 
 if __name__ == "__main__":
