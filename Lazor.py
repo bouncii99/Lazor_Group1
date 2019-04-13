@@ -75,7 +75,7 @@ class Laser(object):
             correspond to the position of the laser and the last two integers
             correspond to the direction it is pointing in.
     """
-    def __init__(self, laser):
+    def __init__(self, laser, xbound, ybound):
         # Define position and direction as given
         x = laser[0]
         y = laser[1]
@@ -83,23 +83,19 @@ class Laser(object):
         vy = laser[3]
         self.position = (x, y)
         self.direction = (vx, vy)
-        # Define the laser as linear equation
+        # Define the laser as a linear equation: y = mx + c
         x2 = x + vx
         y2 = y + vy
         m = (y2 - y) / (x2 - x)
         c = y - (m * x)
+        # Initialize an list to represent the points on the line
         laser_points = []
-        laserdir_x = len(self.grid[0])
-        in_grid = True
-        while in_grid:
-            for j in (2*(range(laserdir_x))):
-                laserdir_y = m * j + c
-                if (Board.pos_check(self, x, y)):
-                    laser_coord = (laserdir_x, laserdir_y)
-                    laser_points.append(laser_coord)
-                else:
-                    in_grid = False
-                    break
+        for i in range(2 * xbound + 2):
+            j = m * i + c
+            if j >= 0 and j <= 2 * ybound + 2:
+                coordinates = (i, j)
+                laser_points.append(coordinates)
+        self.laser_points = laser_points
         
     def __repr__(self):
         s1 = "position = " + str(self.position)
@@ -178,7 +174,7 @@ class Board(object):
         # Initialize lasers
         l = []
         for i in lasers:
-            l.append(Laser(i))
+            l.append(Laser(i, self.xmax, self.ymax))
         self.lasers = l
     
     def __repr__(self):
