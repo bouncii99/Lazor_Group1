@@ -117,6 +117,11 @@ class Laser(object):
         s2 = "and is pointing " + d[i] + "."
         return ' '.join([s1, s2, s3])
 
+    def remove_points(self, index):
+        temp_list = self.laser_points
+        self.laser_points = temp_list[:index + 1]
+        return self.laser_points
+
 
 class Board(object):
     """
@@ -215,6 +220,8 @@ class Board(object):
         for i, j in enumerate(self.blocks):
             # Randomly place the block on the board
             pos = Board.random_placement(self, j)
+            print("Block is placed at:")
+            print(pos)
             # Retrieve the position at which the block has been placed
             block_center = tuple([2 * i + 1 for i in pos])
             cx = block_center[0]
@@ -224,14 +231,28 @@ class Board(object):
                 nx = cx + v[k][0]
                 ny = cy + v[k][1]
                 block_sides.append((nx, ny))
-            print(pos)
             for k in self.lasers:
+                print("Points at which laser intersects on the board:")
                 print(k.laser_points)
                 matches = list(set(k.laser_points).intersection(block_sides))
                 if len(matches) > 0:
                     xint = matches[0][0]
                     yint = matches[0][1]
-                    if j.transmit and j.reflect:
+                    laser_loc = k.laser_points.index((xint, yint))
+                    print("There is a match at (%d, %d)" % (xint, yint))
+                    print("Index at %d" % laser_loc)
+                    if j.block_type == 'A':
+                        if xint % 2 == 0:
+                            while pos_check_laser(self, k.laser_points[-1]):
+                                vx = -1 * k.direction[0]
+                                vy = k.direction[1]
+                                xint += vx
+                                yint += vy
+                                k.laser_points.append((xint, yint))     
+                    elif j.block_type == 'B':
+                        Laser.remove_points(k, laser_loc)
+                        print(k.laser_points)
+                    elif j.block_type == 'C':
                         if xint % 2 == 0:
                             while pos_check_laser(self, k.laser_points[-1]):
                                 vx = -1 * k.direction[0]
@@ -239,6 +260,8 @@ class Board(object):
                                 xint += vx
                                 yint += vy
                                 k.laser_points.append((xint, yint))
-                                print(k.laser_points)
-            raise Exception
+                else:
+                    print("No matches, check the next laser.")
+
+                                
             
