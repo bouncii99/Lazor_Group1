@@ -5,62 +5,62 @@ points, and the board itself.
 import random
 
 
-class Block(object):
-    """
-    This class represents each individual block that can be placed onto the
-    board. We use two boolean variables to describe the properties of the each
-    block:
-        transmit - whether or not the block allows the laser to continue to
-                   travel in the same direction.
-        reflect - whether or not the block reflects the laser in the
-                  appropriate perpendicular direction.
-    There are four cases corresponding to the three different types of blocks
-    and when a spot has no block:
-        For a spot with no block, transmit = True and reflect = False.
-        For a reflect block, transmit = False and reflect = True.
-        For an opaque block, transmit = False and reflect = False.
-        For a refract block, transmit = True and reflect = True.
+# class Block(object):
+#     """
+#     This class represents each individual block that can be placed onto the
+#     board. We use two boolean variables to describe the properties of the each
+#     block:
+#         transmit - whether or not the block allows the laser to continue to
+#                    travel in the same direction.
+#         reflect - whether or not the block reflects the laser in the
+#                   appropriate perpendicular direction.
+#     There are four cases corresponding to the three different types of blocks
+#     and when a spot has no block:
+#         For a spot with no block, transmit = True and reflect = False.
+#         For a reflect block, transmit = False and reflect = True.
+#         For an opaque block, transmit = False and reflect = False.
+#         For a refract block, transmit = True and reflect = True.
 
-    **Parameters**
+#     **Parameters**
 
-        block_type: *str*
-            The type of the block. 'A' corresponds to the reflect block, 'B'
-            corresponds to the opaque block, and 'C' corresponds to the
-            refract block.
-    """
-    def __init__(self, block_type):
-        # Define the type of block
-        self.block_type = block_type
-        # Use conditionals to appropriately set the Boolean properties of the
-        # block
-        if block_type == 'A':
-            self.transmit = False
-            self.reflect = True
-        elif block_type == 'B':
-            self.transmit = False
-            self.reflect = False
-        elif block_type == 'C':
-            self.transmit = True
-            self.reflect = True
-        else:
-            self.transmit = True
-            self.reflect = False       
+#         block_type: *str*
+#             The type of the block. 'A' corresponds to the reflect block, 'B'
+#             corresponds to the opaque block, and 'C' corresponds to the
+#             refract block.
+#     """
+#     def __init__(self, block_type):
+#         # Define the type of block
+#         self.block_type = block_type
+#         # Use conditionals to appropriately set the Boolean properties of the
+#         # block
+#         if block_type == 'A':
+#             self.transmit = False
+#             self.reflect = True
+#         elif block_type == 'B':
+#             self.transmit = False
+#             self.reflect = False
+#         elif block_type == 'C':
+#             self.transmit = True
+#             self.reflect = True
+#         else:
+#             self.transmit = True
+#             self.reflect = False       
 
-    def __repr__(self):
-        s1 = "block type = " + str(self.block_type)
-        s2 = "transmit = " + str(self.transmit)
-        s3 = "reflect = " + str(self.reflect)
-        return '\n'.join([s1, s2, s3])
+#     def __repr__(self):
+#         s1 = "block type = " + str(self.block_type)
+#         s2 = "transmit = " + str(self.transmit)
+#         s3 = "reflect = " + str(self.reflect)
+#         return '\n'.join([s1, s2, s3])
 
-    def __str__(self):
-        if self.block_type == 'A':
-            return "This block is a reflect block."
-        elif self.block_type == 'B':
-            return "This block is an opaque block."
-        elif self.block_type == "C":
-            return "This block is a refract block."
-        else:
-            return "This is not a block."
+#     def __str__(self):
+#         if self.block_type == 'A':
+#             return "This block is a reflect block."
+#         elif self.block_type == 'B':
+#             return "This block is an opaque block."
+#         elif self.block_type == "C":
+#             return "This block is a refract block."
+#         else:
+#             return "This is not a block."
 
 
 class Laser(object):
@@ -152,14 +152,29 @@ class Board(object):
             p.append(i)
         self.points = p
         # Initialize blocks available for placement
-        blocks = []
-        for i in range(reflect):
-            blocks.append(Block("A"))
-        for i in range(opaque):
-            blocks.append(Block("B"))
-        for i in range(refract):
-            blocks.append(Block("C"))
-        self.blocks = blocks
+        self.blocks = [reflect, opaque, refract]
+        # Generate arrays of booleans for reflect and transmit
+        transmit_arr, reflect_arr = [], []
+        for i in range(len(grid)):
+            col_id = grid[i]
+            bool_temp1, bool_temp2 = [], []
+            for j in range(len(col_id)):
+                if col_id[j] == 'A':
+                    bool_temp1.append(False)
+                    bool_temp2.append(True)
+                elif col_id[j] == 'B':
+                    bool_temp1.append(False)
+                    bool_temp2.append(False)
+                elif col_id[j] == 'C':
+                    bool_temp1.append(True)
+                    bool_temp2.append(True)
+                else:
+                    bool_temp1.append(True)
+                    bool_temp2.append(False)
+            transmit_arr.append(bool_temp1)
+            reflect_arr.append(bool_temp2)
+        self.transmit = transmit_arr
+        self.reflect = reflect_arr
 
 
     def __repr__(self):
@@ -168,7 +183,9 @@ class Board(object):
         s3 = "ymax = " + str(self.ymax)
         s4 = "lasers:\n" + str(self.lasers)
         s5 = "points:\n" + str(self.points)
-        return '\n'.join([s1, s2, s3, s4, s5])
+        s6 = "transmit: " + str(self.transmit)
+        s7 = "reflect: " + str(self.reflect)
+        return '\n'.join([s1, s2, s3, s4, s5, s6, s7])
       
     def __str__(self):
         s1 = str(self.grid)

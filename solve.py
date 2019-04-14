@@ -10,8 +10,9 @@ def solve(filename):
     g, rflb, ob, rfrb, l, p = read.read_bff(filename)
     # Initialize board class
     grid = Board(g, l, p, rflb, ob, rfrb)
+    print(repr(grid))
     # Initialize blocks by placing them randomly on the board
-    Board.generate_board(grid)
+    # Board.generate_board(grid)
     #Board.random_placement(grid, )
     # From the blocks that are available, place them in random spots on the
     # board
