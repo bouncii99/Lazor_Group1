@@ -88,18 +88,13 @@ class Laser(object):
         vy = laser[3]
         self.position = (x, y)
         self.direction = (vx, vy)
-        # Define the laser as a linear equation: y = mx + c
-        x2 = x + vx
-        y2 = y + vy
-        self.m = (y2 - y) / (x2 - x)
-        self.c = y - (self.m * x)
         # Represent the line as all the points that make up the line that are
         # within the grid
         laser_points = []
         xmax = 2 * xbound + 2
         ymax = 2 * ybound + 2
         while True:
-            pos = [x, y]
+            pos = (x, y)
             if x >= 0 and x <= xmax and y >= 0 and y <= ymax:
                 laser_points.append(pos)
             else:
@@ -111,10 +106,8 @@ class Laser(object):
     def __repr__(self):
         s1 = "position = " + str(self.position)
         s2 = "direction = " + str(self.direction)
-        s3 = "slope = " + str(self.m)
-        s4 = "y-int = " + str(self.c)
-        s5 = "laser points = " + str(self.laser_points)
-        return '\n'.join([s1, s2, s3, s4, s5])
+        s3 = "laser points = " + str(self.laser_points)
+        return '\n'.join([s1, s2, s3])
 
     def __str__(self):
         unit_vectors = [(1, 1), (1, -1), (-1, -1), (-1, 1)]
@@ -122,7 +115,6 @@ class Laser(object):
         i = unit_vectors.index(self.direction)
         s1 = "This laser starts at position " + str(self.position)
         s2 = "and is pointing " + d[i] + "."
-        s3 = "This laser is represented by the line y = " + str(self.m) + "x + " + str(self.c)
         return ' '.join([s1, s2, s3])
 
 
@@ -181,6 +173,12 @@ class Board(object):
         """ Check if a grid position is valid """
         return x >= 0 and x <= self.xmax and y >= 0 and y <= self.ymax
 
+    def pos_check_laser(self, pos):
+        """ Check if a grid position for the lasers is valid """
+        x = pos[0]
+        y = pos[1]
+        return x >= 0 and x <= 2 * self.xmax + 2 and y >= 0 and y <= 2 * self.ymax + 2
+
     def place_block(self, Block, pos):
         """ Place a block at a given position """
         x = pos[0]
@@ -213,10 +211,34 @@ class Board(object):
         6. Repeat and discount the old position from the new possible combinations
         If possible, bias refract block to be near the centre of the grid
         """
+        v = [(1, 0), (-1, 0), (0, 1), (0, -1)]
         for i, j in enumerate(self.blocks):
             # Randomly place the block on the board
             pos = Board.random_placement(self, j)
             # Retrieve the position at which the block has been placed
-            block_center = [2 * i + 1 for i in pos]
+            block_center = tuple([2 * i + 1 for i in pos])
+            cx = block_center[0]
+            cy = block_center[1]
+            block_sides = []
+            for k in range(len(v)):
+                nx = cx + v[k][0]
+                ny = cy + v[k][1]
+                block_sides.append((nx, ny))
+            print(pos)
+            for k in self.lasers:
+                print(k.laser_points)
+                matches = list(set(k.laser_points).intersection(block_sides))
+                if len(matches) > 0:
+                    xint = matches[0][0]
+                    yint = matches[0][1]
+                    if j.transmit and j.reflect:
+                        if xint % 2 == 0:
+                            while pos_check_laser(self, k.laser_points[-1]):
+                                vx = -1 * k.direction[0]
+                                vy = k.direction[1]
+                                xint += vx
+                                yint += vy
+                                k.laser_points.append((xint, yint))
+                                print(k.laser_points)
             raise Exception
             
