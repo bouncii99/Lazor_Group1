@@ -32,6 +32,9 @@ def transmit():
     pass
 
 def reflect():
+    # At the point where the laser hits the block:
+    # If x is even, flip the sign of y
+    # If x is odd, flip the sign of x
     pass
 
 def calculate_laser(grid, laser, transmit, reflect):
