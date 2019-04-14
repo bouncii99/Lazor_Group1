@@ -10,10 +10,12 @@ def solve(filename):
     g, rflb, ob, rfrb, l, p = read.read_bff(filename)
     # Initialize board class
     grid = Board(g, l, p, rflb, ob, rfrb)
-    print(grid)
+    print(repr(grid))
+    print("\n")
     # Initialize blocks by placing them randomly on the board
     Board.generate_board(grid, grid.blocks)
-    print(grid)
+    Board.refresh_lasers(grid)
+    print(repr(grid))
     # Initialize whatever is necessary to initialize
     # while(all_positions != Filled):
     	# move blocks to a new random positions along with the following criteria:
@@ -24,5 +26,5 @@ def solve(filename):
 
 if __name__ == "__main__":
 	# Input file name
-    fptr = "dark_1.bff"
+    fptr = "mad_4.bff"
     solve(fptr)

@@ -23,7 +23,7 @@ class Laser(object):
             The bottom boundary of the grid. This value is used to specify
             the possible range of points that the laser intersects.
     """
-    def __init__(self, laser, grid):
+    def __init__(self, laser, grid, transmit, reflect):
         # Define position and direction as given
         x = laser[0]
         y = laser[1]
@@ -33,7 +33,7 @@ class Laser(object):
         self.direction = (vx, vy)
         # Represent the line as all the points that make up the line that are
         # within the grid
-        self.laser_points = refresh.calculate_laser(grid, laser)
+        self.laser_points = refresh.calculate_laser(grid, laser, transmit, reflect)
         
     def __repr__(self):
         s1 = "position = " + str(self.position)
@@ -69,18 +69,6 @@ class Board(object):
         # Define dimensions
         self.xmax = len(self.grid[0]) - 1
         self.ymax = len(self.grid) - 1
-        # Initialize lasers
-        l = []
-        for i in lasers:
-            l.append(Laser(i, self.grid))
-        self.lasers = l
-        # Initialize intersection points
-        p = []
-        for i in points:
-            p.append(i)
-        self.points = p
-        # Initialize blocks available for placement
-        self.blocks = [reflect, opaque, refract]
         # Generate arrays of booleans for reflect and transmit
         transmit_arr, reflect_arr = [], []
         for i in range(len(grid)):
@@ -103,6 +91,18 @@ class Board(object):
             reflect_arr.append(bool_temp2)
         self.transmit = transmit_arr
         self.reflect = reflect_arr
+        # Initialize lasers
+        l = []
+        for i in lasers:
+            l.append(Laser(i, self.grid, self.transmit, self.reflect))
+        self.lasers = l
+        # Initialize intersection points
+        p = []
+        for i in points:
+            p.append(i)
+        self.points = p
+        # Initialize blocks available for placement
+        self.blocks = [reflect, opaque, refract]
 
 
     def __repr__(self):
@@ -160,6 +160,13 @@ class Board(object):
                     block_positions.append(pos)
                     break
         return block_positions
+
+    def refresh_lasers(self):
+        for i in self.lasers:
+            temp = [i.position[0], i.position[1], i.direction[0], i.direction[1]]
+            laser_points = refresh.calculate_laser(self.grid, temp)
+            i.laser_points = laser_points
+        return self.lasers
 
     # def generate_board(self):
     #     """
