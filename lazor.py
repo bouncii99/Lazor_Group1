@@ -3,64 +3,7 @@ This file contains the class definitions for the blocks, lasers, intersection
 points, and the board itself.
 """
 import random
-
-
-# class Block(object):
-#     """
-#     This class represents each individual block that can be placed onto the
-#     board. We use two boolean variables to describe the properties of the each
-#     block:
-#         transmit - whether or not the block allows the laser to continue to
-#                    travel in the same direction.
-#         reflect - whether or not the block reflects the laser in the
-#                   appropriate perpendicular direction.
-#     There are four cases corresponding to the three different types of blocks
-#     and when a spot has no block:
-#         For a spot with no block, transmit = True and reflect = False.
-#         For a reflect block, transmit = False and reflect = True.
-#         For an opaque block, transmit = False and reflect = False.
-#         For a refract block, transmit = True and reflect = True.
-
-#     **Parameters**
-
-#         block_type: *str*
-#             The type of the block. 'A' corresponds to the reflect block, 'B'
-#             corresponds to the opaque block, and 'C' corresponds to the
-#             refract block.
-#     """
-#     def __init__(self, block_type):
-#         # Define the type of block
-#         self.block_type = block_type
-#         # Use conditionals to appropriately set the Boolean properties of the
-#         # block
-#         if block_type == 'A':
-#             self.transmit = False
-#             self.reflect = True
-#         elif block_type == 'B':
-#             self.transmit = False
-#             self.reflect = False
-#         elif block_type == 'C':
-#             self.transmit = True
-#             self.reflect = True
-#         else:
-#             self.transmit = True
-#             self.reflect = False       
-
-#     def __repr__(self):
-#         s1 = "block type = " + str(self.block_type)
-#         s2 = "transmit = " + str(self.transmit)
-#         s3 = "reflect = " + str(self.reflect)
-#         return '\n'.join([s1, s2, s3])
-
-#     def __str__(self):
-#         if self.block_type == 'A':
-#             return "This block is a reflect block."
-#         elif self.block_type == 'B':
-#             return "This block is an opaque block."
-#         elif self.block_type == "C":
-#             return "This block is a refract block."
-#         else:
-#             return "This is not a block."
+import refresh
 
 
 class Laser(object):
