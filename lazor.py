@@ -33,7 +33,7 @@ class Laser(object):
         self.direction = (vx, vy)
         # Represent the line as all the points that make up the line that are
         # within the grid
-        self.laser_points = refresh.calculate_laser(grid, laser, transmit, reflect)
+        self.laser_points, _ = refresh.calculate_laser(grid, laser, transmit, reflect)
         
     def __repr__(self):
         s1 = "position = " + str(self.position)
@@ -167,9 +167,12 @@ class Board(object):
         return block_positions
 
     def refresh_lasers(self):
+        new_list = []
         for i in self.lasers:
-            temp = [i.position[0], i.position[1], i.direction[0], i.direction[1]]
-            laser_points, new_lasers = refresh.calculate_laser(self.grid, i, self.transmit, self.reflect)
+            new_list.append(i)
+        while new_list:
+
+            laser_points, new_lasers = refresh.calculate_laser(self.grid, self.laser, self.transmit, self.reflect)
             i.laser_points = laser_points
         return self.lasers
 
