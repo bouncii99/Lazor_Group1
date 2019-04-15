@@ -13,9 +13,9 @@ def solve(filename):
     print(repr(grid))
     print("\n")
     # Initialize blocks by placing them randomly on the board
-    Board.generate_board(grid, grid.blocks)
-    Board.refresh_lasers(grid)
-    print(repr(grid))
+    # Board.generate_board(grid, grid.blocks)
+    # Board.refresh_lasers(grid)
+    # print(repr(grid))
     # Initialize whatever is necessary to initialize
     # while(all_positions != Filled):
     	# move blocks to a new random positions along with the following criteria:

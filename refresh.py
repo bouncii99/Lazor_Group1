@@ -53,18 +53,19 @@ def calculate_laser(grid, laser, transmit, reflect):
                 center = calc_center((cx, cy), (nx, ny))
                 block_position = map_to_block_grid(center)
                 # Determine if the block transmits and/or reflects the laser
-                does_transmit = transmit[block_position[0]][block_position[1]]
-                does_reflect = reflect[block_position[0]][block_position[1]]
-                # Need to make conditional statements for all 4 cases and handle appropriately
-                if does_transmit:
+                does_transmit = transmit[block_position[1]][block_position[0]]
+                does_reflect = reflect[block_position[1]][block_position[0]]
+                # 4 possible cases
+                if does_transmit and not does_reflect:
+                    # No block
                     cx = nx
                     cy = ny
-                if does_reflect:
-                    xtemp2, ytemp2 = reflect(cx, cy)
-                if not does_transmit and if not does_reflect 
-                raise Exception
-            else:
-                pass
+                elif not does_transmit and does_reflect:
+                    print("Reflect block here")
+                elif not does_transmit and not does_reflect:
+                    print("Opaque block here")
+                else:
+                    print("Refract block here")
         else:
             break
     return laser_points
