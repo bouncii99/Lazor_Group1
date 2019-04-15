@@ -179,6 +179,13 @@ class Board(object):
             i.laser_points = laser_points
         return self.lasers
 
+    def check_solution(self):
+        complete_list = []
+        for i in self.lasers:
+            for j in i.laser_points:
+                complete_list.append(j)
+        points = map(tuple, self.points)
+        return complete_list, points
     # def generate_board(self):
     #     """
     #     1. Randomly place all blocks

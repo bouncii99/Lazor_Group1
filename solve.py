@@ -23,6 +23,7 @@ def solve(filename):
     Board.refresh_lasers(grid)
     print(repr(grid))
     print("\n")
+    print(Board.check_solution(grid))
     # while(all_positions != Filled):
     	# move blocks to a new random positions along with the following criteria:
             # The origsinal lasers must intersect with one of the blocks
