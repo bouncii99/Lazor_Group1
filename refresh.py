@@ -1,6 +1,7 @@
 """
 Function for calculating laser points given a certain grid
 """
+import lazor
 
 def check_position(x, xmax, y, ymax):
     return x >= 0 and x <= xmax and y >= 0 and y <= ymax
@@ -38,11 +39,11 @@ def reflect_laser(x, y, vx, vy):
 
 
 def calculate_laser(grid, laser, transmit, reflect):
-    laser_points = []
-    cx = laser[0]
-    cy = laser[1]
-    vx = laser[2]
-    vy = laser[3]
+    laser_points, new_lasers = [], []
+    cx = laser.position[0]
+    cy = laser.position[1]
+    vx = laser.direction[0]
+    vy = laser.direction[1]
     xmax = 2 * (len(grid[0]) - 1) + 2
     ymax = 2 * (len(grid) - 1) + 2
     while True:
@@ -72,12 +73,13 @@ def calculate_laser(grid, laser, transmit, reflect):
                     break
                 else:
                     # Refract block
-                    # lazor.Laser([cx, cy, vx, vy], )
+                    nx2, ny2, vx2, vy2 = reflect_laser(cx, cy, vx, vy)
+                    new_lasers.append(lazor.Laser([cx, cy, vx2, vy2]))
                     cx = nx
                     cy = ny
         else:
             break
-    return laser_points
+    return laser_points, new_lasers
 
 
 if __name__ == "__main__":

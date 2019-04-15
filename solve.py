@@ -13,17 +13,14 @@ def solve(filename):
     print("--- Initial grid ---")
     print(repr(grid))
     print("\n")
-    # Initialize blocks by placing them randomly on the board
-    print("--- Place blocks ---")
+    # Initialize blocks by placing them randomly on the board and refresh lasers
+    print("--- Place blocks and refresh lasers---")
     Board.generate_board(grid, grid.blocks)
-    print(repr(grid))
-    print("\n")
-    # Refresh lasers
-    print("--- Refresh_lasers ---")
     Board.refresh_lasers(grid)
     print(repr(grid))
-    print("\n")
     print(Board.check_solution(grid))
+    print("\n")
+    # print(Board.check_solution(grid))
     # while(all_positions != Filled):
     	# move blocks to a new random positions along with the following criteria:
             # The origsinal lasers must intersect with one of the blocks

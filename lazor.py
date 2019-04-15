@@ -124,12 +124,6 @@ class Board(object):
         """ Check if a grid position is valid """
         return x >= 0 and x <= self.xmax and y >= 0 and y <= self.ymax
 
-    # def pos_check_laser(self, pos):
-    #     """ Check if a grid position for the lasers is valid """
-    #     x = pos[0]
-    #     y = pos[1]
-    #     return x >= 0 and x <= 2 * self.xmax + 2 and y >= 0 and y <= 2 * self.ymax + 2
-
     def place_block(self, block, pos, transmit, reflect):
         """ Place a block at a given position """
         x = pos[0]
@@ -175,7 +169,7 @@ class Board(object):
     def refresh_lasers(self):
         for i in self.lasers:
             temp = [i.position[0], i.position[1], i.direction[0], i.direction[1]]
-            laser_points = refresh.calculate_laser(self.grid, temp, self.transmit, self.reflect)
+            laser_points, new_lasers = refresh.calculate_laser(self.grid, i, self.transmit, self.reflect)
             i.laser_points = laser_points
         return self.lasers
 
@@ -185,63 +179,4 @@ class Board(object):
             for j in i.laser_points:
                 complete_list.append(j)
         points = map(tuple, self.points)
-        return complete_list, points
-    # def generate_board(self):
-    #     """
-    #     1. Randomly place all blocks
-    #     2. Determine position of all blocks
-    #     3. For each block, check if it intersects with a block.
-    #     4. Determine new laser path.
-    #     5. Check if all points are satisfied
-    #     6. Repeat and discount the old position from the new possible combinations
-    #     If possible, bias refract block to be near the centre of the grid
-    #     """
-    #     v = [(1, 0), (-1, 0), (0, 1), (0, -1)]
-    #     for i, j in enumerate(self.blocks):
-    #         # Randomly place the block on the board
-    #         pos = Board.random_placement(self, j)
-    #         print("Block is placed at:")
-    #         print(pos)
-    #         # Retrieve the position at which the block has been placed
-    #         block_center = tuple([2 * i + 1 for i in pos])
-    #         cx = block_center[0]
-    #         cy = block_center[1]
-    #         block_sides = []
-    #         for k in range(len(v)):
-    #             nx = cx + v[k][0]
-    #             ny = cy + v[k][1]
-    #             block_sides.append((nx, ny))
-    #         for k in self.lasers:
-    #             print("Points at which laser intersects on the board:")
-    #             print(k.laser_points)
-    #             matches = list(set(k.laser_points).intersection(block_sides))
-    #             if len(matches) > 0:
-    #                 xint = matches[0][0]
-    #                 yint = matches[0][1]
-    #                 laser_loc = k.laser_points.index((xint, yint))
-    #                 print("There is a match at (%d, %d)" % (xint, yint))
-    #                 print("Index at %d" % laser_loc)
-    #                 if j.block_type == 'A':
-    #                     if xint % 2 == 0:
-    #                         while pos_check_laser(self, k.laser_points[-1]):
-    #                             vx = -1 * k.direction[0]
-    #                             vy = k.direction[1]
-    #                             xint += vx
-    #                             yint += vy
-    #                             k.laser_points.append((xint, yint))     
-    #                 elif j.block_type == 'B':
-    #                     Laser.remove_points(k, laser_loc)
-    #                     print(k.laser_points)
-    #                 elif j.block_type == 'C':
-    #                     if xint % 2 == 0:
-    #                         while pos_check_laser(self, k.laser_points[-1]):
-    #                             vx = -1 * k.direction[0]
-    #                             vy = k.direction[1]
-    #                             xint += vx
-    #                             yint += vy
-    #                             k.laser_points.append((xint, yint))
-    #             else:
-    #                 print("No matches, check the next laser.")
-
-                                
-            
+        return set(points).issubset(complete_list)
