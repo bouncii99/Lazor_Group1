@@ -25,9 +25,9 @@ def map_to_block_grid(pos):
     ny = (pos[1] - 1) / 2
     return (nx, ny)
 
-def reflect(x, y, vx, vy):
+def reflect_laser(x, y, vx, vy):
     # If x is even, flip the sign of vy
-    if x % 2 == 0:
+    if x % 2 != 0:
         vy = -1 * vy
     # If x is odd, flip the sign of vx
     else:
@@ -66,7 +66,7 @@ def calculate_laser(grid, laser, transmit, reflect):
                     cy = ny
                 elif not does_transmit and does_reflect:
                     # Reflect block
-                    cx, cy, vx, vy = reflect(cx, cy, vx, vy)
+                    cx, cy, vx, vy = reflect_laser(cx, cy, vx, vy)
                 elif not does_transmit and not does_reflect:
                     # Opaque block
                     break
@@ -75,7 +75,6 @@ def calculate_laser(grid, laser, transmit, reflect):
                     # lazor.Laser([cx, cy, vx, vy], )
                     cx = nx
                     cy = ny
-
         else:
             break
     return laser_points

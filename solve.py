@@ -10,13 +10,19 @@ def solve(filename):
     g, rflb, ob, rfrb, l, p = read.read_bff(filename)
     # Initialize board class
     grid = Board(g, l, p, rflb, ob, rfrb)
+    print("--- Initial grid ---")
     print(repr(grid))
     print("\n")
     # Initialize blocks by placing them randomly on the board
-    # Board.generate_board(grid, grid.blocks)
-    # Board.refresh_lasers(grid)
-    # print(repr(grid))
-    # Initialize whatever is necessary to initialize
+    print("--- Place blocks ---")
+    Board.generate_board(grid, grid.blocks)
+    print(repr(grid))
+    print("\n")
+    # Refresh lasers
+    print("--- Refresh_lasers ---")
+    Board.refresh_lasers(grid)
+    print(repr(grid))
+    print("\n")
     # while(all_positions != Filled):
     	# move blocks to a new random positions along with the following criteria:
             # The origsinal lasers must intersect with one of the blocks

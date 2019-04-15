@@ -130,13 +130,22 @@ class Board(object):
     #     y = pos[1]
     #     return x >= 0 and x <= 2 * self.xmax + 2 and y >= 0 and y <= 2 * self.ymax + 2
 
-    def place_block(self, block, pos):
+    def place_block(self, block, pos, transmit, reflect):
         """ Place a block at a given position """
         x = pos[0]
         y = pos[1]
         # Check if the position is valid
         if Board.pos_check(self, x, y) and self.grid[y][x] == 'o':
             self.grid[y][x] = block
+            if block == 'A':
+                self.transmit[y][x] = False
+                self.reflect[y][x] = True
+            elif block == 'B':
+                self.transmit[y][x] = False
+                self.reflect[y][x] = False
+            elif block == 'C':
+                self.transmit[y][x] = True
+                self.reflect[y][x] = True
             return self.grid
         else:
             return -1
@@ -155,7 +164,9 @@ class Board(object):
                 x = random.randint(0, self.xmax)
                 y = random.randint(0, self.ymax)
                 pos = (x, y)
-                temp = Board.place_block(self, i, pos)
+                transmit = self.transmit[y][x]
+                reflect = self.reflect[y][x]
+                temp = Board.place_block(self, i, pos, transmit, reflect)
                 if temp != -1:
                     block_positions.append(pos)
                     break
@@ -164,7 +175,7 @@ class Board(object):
     def refresh_lasers(self):
         for i in self.lasers:
             temp = [i.position[0], i.position[1], i.direction[0], i.direction[1]]
-            laser_points = refresh.calculate_laser(self.grid, temp)
+            laser_points = refresh.calculate_laser(self.grid, temp, self.transmit, self.reflect)
             i.laser_points = laser_points
         return self.lasers
 
