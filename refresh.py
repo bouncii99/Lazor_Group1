@@ -1,7 +1,6 @@
 """
 Function for calculating laser points given a certain grid
 """
-import lazor
 
 def check_position(x, xmax, y, ymax):
     return x >= 0 and x <= xmax and y >= 0 and y <= ymax
@@ -26,12 +25,17 @@ def map_to_block_grid(pos):
     ny = (pos[1] - 1) / 2
     return (nx, ny)
 
-def reflect():
-    # At the point where the laser hits the block:
-    # If x is even, flip the sign of y
-    # If x is odd, flip the sign of x
-    # Create new laser object 
-    pass
+def reflect(x, y, vx, vy):
+    # If x is even, flip the sign of vy
+    if x % 2 == 0:
+        vy = -1 * vy
+    # If x is odd, flip the sign of vx
+    else:
+        vx = -1 * vx
+    # Calculate new position
+    nx, ny = next_position(x, y, vx, vy)
+    return nx, ny, vx, vy
+
 
 def calculate_laser(grid, laser, transmit, reflect):
     laser_points = []
@@ -43,7 +47,7 @@ def calculate_laser(grid, laser, transmit, reflect):
     ymax = 2 * (len(grid) - 1) + 2
     while True:
         # Check if the current point is in the grid
-        if check_position(cx, xmax, cy, ymax):
+        if check_position(cx, xmax, cy, ymax) and (cx, cy) not in laser_points:
             pos = (cx, cy)
             laser_points.append(pos)
             # Calculate the possible next point
@@ -61,11 +65,17 @@ def calculate_laser(grid, laser, transmit, reflect):
                     cx = nx
                     cy = ny
                 elif not does_transmit and does_reflect:
-                    print("Reflect block here")
+                    # Reflect block
+                    cx, cy, vx, vy = reflect(cx, cy, vx, vy)
                 elif not does_transmit and not does_reflect:
-                    print("Opaque block here")
+                    # Opaque block
+                    break
                 else:
-                    print("Refract block here")
+                    # Refract block
+                    # lazor.Laser([cx, cy, vx, vy], )
+                    cx = nx
+                    cy = ny
+
         else:
             break
     return laser_points
