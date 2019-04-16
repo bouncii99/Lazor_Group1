@@ -7,35 +7,40 @@ from lazor import Board
 
 def try_solution(grid, list_of_incorrect_boards):
     while True:
-        x, _ = Board.generate_board(grid, grid.blocks)
-        print(x)
+        x, _ = Board.generate_board(grid)
         if x not in list_of_incorrect_boards:
             break
     y, _ = Board.refresh_lasers(x)
-    return y
 
 
 def solve(filename):
     # Read and parse through board file
-    g, rflb, ob, rfrb, l, p = read.read_bff(filename)
+    g, rflb, ob, rfrb, L, p = read.read_bff(filename)
     # Initialize board class
-    grid = Board(g, l, p, rflb, ob, rfrb)
-    print("--- Initial grid ---")
-    print(repr(grid))
+    board = Board(g, L, p, rflb, ob, rfrb)
+    print("--- Initial board ---")
+    print(board)
     print("\n")
     incorrect_boards = []
+    count = 0
     while True:
         # Place blocks randomly on the board and refresh lasers
-        print("Trying solutions...")
-        test = try_solution(grid, incorrect_boards)
-        if Board.check_solution(test):
+        print(count)
+        try_solution(board, incorrect_boards)
+        if Board.check_solution(board):
+            solution = str(board.grid)
             break
         else:
-            incorrect_boards.append(test)
+            incorrect_boards.append(board)
+            del board
+            g, rflb, ob, rfrb, L, p = read.read_bff(filename)
+            board = Board(g, L, p, rflb, ob, rfrb)
+            count += 1
     print("Solution has been found!")
+    print(solution)
 
 
 if __name__ == "__main__":
     # Input file name
-    file = "mad_4.bff"
+    file = "dark_1.bff"
     solve(file)

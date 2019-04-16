@@ -95,8 +95,8 @@ class Board(object):
         self.reflect = reflect_arr
         # Initialize lasers
         L = []
-        for i in lasers:
-            L.append(Laser(i, self.grid, self.transmit, self.reflect))
+        for i, j in enumerate(lasers):
+            L.append(Laser(j, self.grid, self.transmit, self.reflect))
         self.lasers = L
         # Initialize intersection points
         p = []
@@ -145,14 +145,14 @@ class Board(object):
         else:
             return -1
 
-    def generate_board(self, blocks):
+    def generate_board(self):
         """ Calls the place_block function to randomly place blocks """
         block_list, block_positions = [], []
-        for i in range(blocks[0]):
+        for i in range(self.blocks[0]):
             block_list.append('A')
-        for i in range(blocks[1]):
+        for i in range(self.blocks[1]):
             block_list.append('B')
-        for i in range(blocks[2]):
+        for i in range(self.blocks[2]):
             block_list.append('C')
         for i in block_list:
             while True:
@@ -194,6 +194,3 @@ class Board(object):
                 complete_list.append(j)
         points = map(tuple, self.points)
         return set(points).issubset(complete_list)
-
-    def reset_board(self, grid, lasers, points, reflect, opaque, refract):
-        self.__init__(grid, lasers, points, reflect, opaque, refract)

@@ -77,7 +77,7 @@ def calculate_laser(grid, laser, transmit, reflect):
                 else:
                     # Refract block
                     nx2, ny2, vx2, vy2 = reflect_laser(cx, cy, vx, vy)
-                    new_lasers.append(lazor.Laser([cx, cy, vx2, vy2]))
+                    new_lasers.append(lazor.Laser([cx, cy, vx2, vy2], grid, transmit, reflect))
                     cx = nx
                     cy = ny
         else:
