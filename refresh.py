@@ -3,6 +3,7 @@ Function for calculating laser points given a certain grid
 """
 import lazor
 
+
 def check_position(x, xmax, y, ymax):
     return x >= 0 and x <= xmax and y >= 0 and y <= ymax
 
@@ -21,10 +22,12 @@ def calc_center(p1, p2):
     else:
         return (nx, y)
 
+
 def map_to_block_grid(pos):
     nx = (pos[0] - 1) / 2
     ny = (pos[1] - 1) / 2
     return (nx, ny)
+
 
 def reflect_laser(x, y, vx, vy):
     # If x is even, flip the sign of vy
@@ -40,10 +43,10 @@ def reflect_laser(x, y, vx, vy):
 
 def calculate_laser(grid, laser, transmit, reflect):
     laser_points, new_lasers = [], []
-    cx = laser.position[0]
-    cy = laser.position[1]
-    vx = laser.direction[0]
-    vy = laser.direction[1]
+    cx = laser[0]
+    cy = laser[1]
+    vx = laser[2]
+    vy = laser[3]
     xmax = 2 * (len(grid[0]) - 1) + 2
     ymax = 2 * (len(grid) - 1) + 2
     while True:
@@ -80,7 +83,3 @@ def calculate_laser(grid, laser, transmit, reflect):
         else:
             break
     return laser_points, new_lasers
-
-
-if __name__ == "__main__":
-    pass

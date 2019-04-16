@@ -24,6 +24,7 @@ class Laser(object):
             the possible range of points that the laser intersects.
     """
     def __init__(self, laser, grid, transmit, reflect):
+        self.laser = laser
         # Define position and direction as given
         x = laser[0]
         y = laser[1]
@@ -33,8 +34,9 @@ class Laser(object):
         self.direction = (vx, vy)
         # Represent the line as all the points that make up the line that are
         # within the grid
-        self.laser_points, _ = refresh.calculate_laser(grid, laser, transmit, reflect)
-        
+        self.laser_points, _ = refresh.calculate_laser(
+            grid, self.laser, transmit, reflect)
+
     def __repr__(self):
         s1 = "position = " + str(self.position)
         s2 = "direction = " + str(self.direction)
@@ -92,10 +94,10 @@ class Board(object):
         self.transmit = transmit_arr
         self.reflect = reflect_arr
         # Initialize lasers
-        l = []
+        L = []
         for i in lasers:
-            l.append(Laser(i, self.grid, self.transmit, self.reflect))
-        self.lasers = l
+            L.append(Laser(i, self.grid, self.transmit, self.reflect))
+        self.lasers = L
         # Initialize intersection points
         p = []
         for i in points:
@@ -103,7 +105,6 @@ class Board(object):
         self.points = p
         # Initialize blocks available for placement
         self.blocks = [reflect, opaque, refract]
-
 
     def __repr__(self):
         s1 = "grid: " + str(self.grid)
@@ -115,11 +116,11 @@ class Board(object):
         s7 = "reflect: " + str(self.reflect)
         s8 = "blocks: " + str(self.blocks)
         return '\n'.join([s1, s2, s3, s4, s5, s6, s7, s8])
-      
+
     def __str__(self):
         s1 = str(self.grid)
         return s1
-    
+
     def pos_check(self, x, y):
         """ Check if a grid position is valid """
         return x >= 0 and x <= self.xmax and y >= 0 and y <= self.ymax
@@ -170,10 +171,20 @@ class Board(object):
         new_list = []
         for i in self.lasers:
             new_list.append(i)
-        while new_list:
-
-            laser_points, new_lasers = refresh.calculate_laser(self.grid, self.laser, self.transmit, self.reflect)
-            i.laser_points = laser_points
+        lp = []
+        while len(new_list) > 0:
+            current_laser = new_list[0]
+            x, y = current_laser.position
+            vx, vy = current_laser.direction
+            points, new_lasers = refresh.calculate_laser(
+                self.grid, [x, y, vx, vy], self.transmit, self.reflect)
+            if len(new_lasers) > 0:
+                for i in new_lasers:
+                    new_list.append(i)
+            lp.append(points)
+            new_list.pop(0)
+        for i, j in enumerate(self.lasers):
+            j.laser_points = lp[i]
         return self.lasers
 
     def check_solution(self):

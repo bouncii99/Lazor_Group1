@@ -76,37 +76,3 @@ def read_bff(filename):
     else:
         refract_blocks = 0
     return grid, reflect_blocks, opaque_blocks, refract_blocks, lasers, points
-
-
-def main():
-    # Input file name
-    fptr = "mad_1.bff"
-    # Read and parse through board file
-    g, rflb, ob, rfrb, l, p = read_bff(fptr)
-    # Print parsed data
-    print("Grid:")
-    for i in g:
-        print(str(i))
-    print("\nBlocks available to be placed:")
-    if rflb == 1:
-        print(str(rflb) + " reflect block")
-    else:
-        print(str(rflb) + " reflect blocks")
-    if ob == 1:
-        print(str(ob) + " opaque block")
-    else:
-        print(str(ob) + " opaque blocks")
-    if rfrb == 1:
-        print(str(rfrb) + " refract block\n")
-    else:
-        print(str(rfrb) + " refract blocks\n")
-    print("Lasers:")
-    for i in l:
-        print(str(i))
-    print("\nPoints where the lasers must intersect:")
-    for i in p:
-        print(str(i))
-
-
-if __name__ == "__main__":
-    main()

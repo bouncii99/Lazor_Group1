@@ -13,22 +13,16 @@ def solve(filename):
     print("--- Initial grid ---")
     print(repr(grid))
     print("\n")
-    # Initialize blocks by placing them randomly on the board and refresh lasers
-    print("--- Place blocks and refresh lasers---")
+    # Place blocks randomly on the board and refresh lasers
     Board.generate_board(grid, grid.blocks)
     Board.refresh_lasers(grid)
+    print("--- Place blocks and refresh lasers---")
     print(repr(grid))
     print(Board.check_solution(grid))
     print("\n")
-    # print(Board.check_solution(grid))
-    # while(all_positions != Filled):
-    	# move blocks to a new random positions along with the following criteria:
-            # The origsinal lasers must intersect with one of the blocks
-            # The positions cannot have been tested already
-            # If in the previous position, a laser is being reflected/refracted, keep that block in the same position and only randomly move the other blocks
-    	# Refresh board
+
 
 if __name__ == "__main__":
-	# Input file name
-    fptr = "mad_4.bff"
-    solve(fptr)
+    # Input file name
+    file = "mad_4.bff"
+    solve(file)
