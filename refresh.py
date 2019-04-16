@@ -1,14 +1,38 @@
 """
-Function for calculating laser points given a certain grid
+This Python script contains functions that are used for calculating the points
+in the path of a laser given a certain board to solve.
 """
-import lazor
 
 
 def check_position(x, xmax, y, ymax):
+    """
+    Checks the position of a point on the grid where the laser can travel.
+    Will return True or False depending on if the point is within the
+    boundaries of the grid.
+
+    **Parameters**
+
+        x: *int*
+            The x-coordinate of the current point of interest.
+        xmax: *int*
+            The maximum value of the x-axis (rightmost side of the grid).
+        y: *int*
+            The y-coordinate of the current point of interest.
+        ymax: *int*
+            The maximum value of the y-axis (bottom side of the grid).
+    """
     return x >= 0 and x <= xmax and y >= 0 and y <= ymax
 
 
 def next_position(x, y, vx, vy):
+    """
+    Calculates the next position that the laser will cross through based on
+    the direction of the laser. Will return the new coordinates as integers.
+
+    **Parameters**
+
+        x: *int*
+    """
     return x + vx, y + vy
 
 
@@ -42,8 +66,7 @@ def reflect_laser(x, y, vx, vy):
 
 
 def calculate_laser(grid, laser, transmit, reflect):
-    laser_points = []
-    lp = []
+    laser_points, lp = [], []
     cx = laser[0]
     cy = laser[1]
     vx = laser[2]
@@ -89,3 +112,16 @@ def calculate_laser(grid, laser, transmit, reflect):
     for point in lp:
         laser_points.append(point)
     return laser_points
+
+
+def main():
+    grid = [['x', 'o', 'o'], ['o', 'o', 'o'], ['o', 'o', 'x']]
+    laser = [3, 0, -1, 1]
+    transmit_array = [[True, True, True], [True, True, True], [True, True, True]]
+    reflect_array = [[False, False, False], [False, False, False], [False, False, False]]
+    lp = calculate_laser(grid, laser, transmit_array, reflect_array)
+    print(lp)
+
+
+if __name__ == '__main__':
+    main()

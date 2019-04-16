@@ -1,5 +1,6 @@
 """
-This Python file reads in a BFF file as specified by the user.
+This Python script contains a function that reads in a BFF file as specified
+by the user.
 """
 from re import findall
 
@@ -7,10 +8,14 @@ from re import findall
 def read_bff(filename):
     """
     Reads and parses through the .bff file.
+
     **Parameters**
+
         filename: *str*
-            The name of the .bff file to be read.
+            The name of the .bff file to be read in.
+
     **Returns**
+
         grid: *list, str*
             A list of lists corresponding to the grid from the original .bff
             file. Each list corresponds to a row of the grid and each string
@@ -37,7 +42,7 @@ def read_bff(filename):
     lasers = []
     points = []
     # Define boolean value to keep track of if the line we are parsing through
-    # represents the grid
+    # represents the grid or not
     in_grid = False
     # Open the file and read through each line
     raw_lines = open(filename, 'r')
@@ -62,7 +67,7 @@ def read_bff(filename):
             lasers.append([int(s) for s in findall(r'-?\d', line)])
         if line[0] == 'P':
             points.append([int(s) for s in line if s.isdigit()])
-    # Convert block lists to appropriate ints
+    # Convert block lists to appropriate integers
     if len(reflect_blocks) > 0:
         reflect_blocks = reflect_blocks[0]
     else:
@@ -76,3 +81,25 @@ def read_bff(filename):
     else:
         refract_blocks = 0
     return grid, reflect_blocks, opaque_blocks, refract_blocks, lasers, points
+
+
+def main():
+    # Test the read_bff function
+    file = "dark_1.bff"
+    g, rflb, ob, rfrb, L, p = read_bff(file)
+    print("Grid:")
+    for i in g:
+        print(i)
+    print("\nReflect blocks: " + str(rflb))
+    print("Opaque blocks: " + str(ob))
+    print("Refract blocks: " + str(rfrb))
+    print("\nLasers:")
+    for i in L:
+        print(i)
+    print("\nPoints that need the lasers to intersect:")
+    for i in p:
+        print(i)
+
+
+if __name__ == '__main__':
+    main()
