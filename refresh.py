@@ -48,11 +48,12 @@ def calculate_laser(grid, laser, transmit, reflect):
     cy = laser[1]
     vx = laser[2]
     vy = laser[3]
+    initial_direction = (vx, vy)
     xmax = 2 * (len(grid[0]) - 1) + 2
     ymax = 2 * (len(grid) - 1) + 2
     while True:
         # Check if the current point is in the grid
-        if check_position(cx, xmax, cy, ymax) and (cx, cy) not in laser_points:
+        if check_position(cx, xmax, cy, ymax):
             pos = (cx, cy)
             laser_points.append(pos)
             # Calculate the possible next point
@@ -81,6 +82,8 @@ def calculate_laser(grid, laser, transmit, reflect):
                     lp = calculate_laser(grid, [nx2, ny2, vx2, vy2], transmit, reflect)
                     cx = nx
                     cy = ny
+            else:
+                break
         else:
             break
     for point in lp:

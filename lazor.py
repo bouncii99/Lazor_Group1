@@ -178,9 +178,6 @@ class Board(object):
             vx, vy = current_laser.direction
             points = refresh.calculate_laser(
                 self.grid, [x, y, vx, vy], self.transmit, self.reflect)
-            # if len(new_lasers) > 0:
-            #     for i in new_lasers:
-            #         new_list.append(i)
             lp.append(points)
             new_list.pop(0)
         for i, j in enumerate(self.lasers):
