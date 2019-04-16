@@ -102,7 +102,11 @@ def calculate_laser(grid, laser, transmit, reflect):
                 else:
                     # Refract block
                     nx2, ny2, vx2, vy2 = reflect_laser(cx, cy, vx, vy)
-                    lp = calculate_laser(grid, [nx2, ny2, vx2, vy2], transmit, reflect)
+                    center_test = calc_center((cx, cy), (nx2, ny2))
+                    block_position_test = map_to_block_grid(center_test)
+                    does_transmit_test = transmit[block_position_test[1]][block_position_test[0]]
+                    if does_transmit_test:
+                        lp = calculate_laser(grid, [nx2, ny2, vx2, vy2], transmit, reflect)
                     cx = nx
                     cy = ny
             else:

@@ -39,4 +39,3 @@ if __name__ == "__main__":
     for file in files:
         output = solve(file)
         print(output)
-        raise Exception
