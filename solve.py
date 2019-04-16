@@ -10,7 +10,7 @@ def try_solution(grid, list_of_incorrect_boards):
         x, _ = Board.generate_board(grid)
         if x not in list_of_incorrect_boards:
             break
-    y, _ = Board.refresh_lasers(x)
+    Board.refresh_lasers(x)
 
 
 def solve(filename):
@@ -25,12 +25,13 @@ def solve(filename):
     count = 0
     while True:
         # Place blocks randomly on the board and refresh lasers
-        print(count)
         try_solution(board, incorrect_boards)
         if Board.check_solution(board):
             solution = str(board.grid)
             break
         else:
+            print(count)
+            print(repr(board))
             incorrect_boards.append(board)
             del board
             g, rflb, ob, rfrb, L, p = read.read_bff(filename)
@@ -42,5 +43,5 @@ def solve(filename):
 
 if __name__ == "__main__":
     # Input file name
-    file = "dark_1.bff"
+    file = "mad_1.bff"
     solve(file)
