@@ -165,7 +165,7 @@ class Board(object):
                 if temp != -1:
                     block_positions.append(pos)
                     break
-        return block_positions
+        return self, block_positions
 
     def refresh_lasers(self):
         new_list = []
@@ -185,7 +185,7 @@ class Board(object):
             new_list.pop(0)
         for i, j in enumerate(self.lasers):
             j.laser_points = lp[i]
-        return self.lasers
+        return self, self.lasers
 
     def check_solution(self):
         complete_list = []
@@ -194,3 +194,6 @@ class Board(object):
                 complete_list.append(j)
         points = map(tuple, self.points)
         return set(points).issubset(complete_list)
+
+    def reset_board(self, grid, lasers, points, reflect, opaque, refract):
+        self.__init__(grid, lasers, points, reflect, opaque, refract)
