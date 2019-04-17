@@ -34,14 +34,13 @@ def solve(filename):
 
 def board_display(disp):
     sol_file = open("Solution.txt", "w")
-    # op = []
-    # op.append(''.join(e for e in disp if e.isalnum()))
-    # return op
-    # return sol_file
-    # split_length = read.g
     cleanstring = re.sub('\W+',"", disp)
-    return cleanstring
+    cleanstring_grid = wrap(cleanstring, int(len(cleanstring) ** 0.5))
+    return cleanstring_grid
     sol_file.writelines(["%s\n" % item  for item in cleanstring])
+    return sol_file
+
+
 if __name__ == "__main__":
     # Input test cases
     files = ["dark_1.bff", "mad_1.bff", "mad_4.bff",
@@ -51,6 +50,4 @@ if __name__ == "__main__":
     for file in files:
         solve_input = solve(file)
         output = (board_display(solve_input))
-        # Use wrap function above to split string of length n
-        # to chunks of length g
         print output
