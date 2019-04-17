@@ -16,12 +16,14 @@ class Laser(object):
             A list of integers representing the laser. The first two integers
             correspond to the position of the laser and the last two integers
             correspond to the direction it is pointing in.
-        xbound: *int*
-            The rightmost boundary of the grid. This value is used to specify
-            the possible domain of points that the laser intersects.
-        ybound: *int*
-            The bottom boundary of the grid. This value is used to specify
-            the possible range of points that the laser intersects.
+        grid: *list, str*
+            The list of characters that represents all of the available spots
+            on the board. Each list inside the list represents a row of the
+            board.
+        transmit: *list, Boolean*
+            A block property that is true whenever a laser continues on its path.
+        reflect:  *list, Boolean*
+            A block property that is true whenever a laser changes direction.            
     """
     def __init__(self, laser, grid, transmit, reflect):
         self.laser = laser
@@ -64,6 +66,16 @@ class Board(object):
             The list of characters that represents all of the available spots
             on the board. Each list inside the list represents a row of the
             board.
+        lasers: *list, tuple*
+            Each laser is a list of tuples that represent the points along its path.
+        points: *list, tuple*
+            A list of points that the laser has to intersect to solve the board.
+        reflect: *list, Boolean*
+            A block property that reflects a laser (i.e changes its direction).
+        opaque: *list, Boolean*
+            A block property that stops a laser.
+        refract: *list, Boolean*
+            A block property that simultaneously reflects and transmits a laser.
     """
     def __init__(self, grid, lasers, points, reflect, opaque, refract):
         # Define grid
