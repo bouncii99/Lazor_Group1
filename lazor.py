@@ -71,7 +71,8 @@ class Board(object):
         # Define dimensions
         self.xmax = len(self.grid[0]) - 1
         self.ymax = len(self.grid) - 1
-        # Generate arrays of booleans for reflect and transmit
+        # Generate arrays of booleans for reflect and transmit to give each
+        # block its appropriate properties
         transmit_arr, reflect_arr = [], []
         for i in range(len(grid)):
             col_id = grid[i]
@@ -122,11 +123,11 @@ class Board(object):
         return s1
 
     def pos_check(self, x, y):
-        """ Check if a grid position is valid """
+        # Check if a grid position is valid
         return x >= 0 and x <= self.xmax and y >= 0 and y <= self.ymax
 
     def place_block(self, block, pos, transmit, reflect):
-        """ Place a block at a given position """
+        # Place a block at a given position
         x = pos[0]
         y = pos[1]
         # Check if the position is valid
@@ -146,7 +147,7 @@ class Board(object):
             return -1
 
     def generate_board(self):
-        """ Calls the place_block function to randomly place blocks """
+        # Calls the place_block function to randomly place blocks
         block_list, block_positions = [], []
         for i in range(self.blocks[0]):
             block_list.append('A')
@@ -168,6 +169,7 @@ class Board(object):
         return self, block_positions
 
     def refresh_lasers(self):
+        # Refreshes the position and/or direction of a laser upon hitting a block
         new_list = []
         for i in self.lasers:
             new_list.append(i)
@@ -185,6 +187,7 @@ class Board(object):
         return self, self.lasers
 
     def check_solution(self):
+        # Checks to see if all of the necessary points are interesected by the lasers
         complete_list = []
         for i in self.lasers:
             for j in i.laser_points:
