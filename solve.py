@@ -1,20 +1,38 @@
 """
-Solving algorithm
+This is the main Python script that solves Lazor puzzles.
 """
-import read
 from lazor import Board
-import re
+from read import read_bff
+from re import sub
 from textwrap import wrap
 
 
-def try_solution(grid):
-    x, _ = Board.generate_board(grid)
-    Board.refresh_lasers(x)
+def try_solution(board):
+    """
+    This function generates a possible solution by placing available blocks on
+    the board and refreshing the paths where the lasers travel. The function
+    takes in a lazor.Board object and will update the appropriate attributes
+    of the object accordingly.
+    """
+    board_gen, _ = Board.generate_board(board)
+    Board.refresh_lasers(board_gen)
 
 
 def solve(filename):
+    """
+    This function solves the Lazor puzzle.
+
+    **Parameters**
+
+        filename: *str*
+            The name of the file to be solved.
+
+    **Returns**
+
+        solution: *str*
+    """
     # Read and parse through board file
-    g, rflb, ob, rfrb, L, p = read.read_bff(filename)
+    g, rflb, ob, rfrb, L, p = read_bff(filename)
     # Initialize board class
     board = Board(g, L, p, rflb, ob, rfrb)
     # incorrect_boards = []
@@ -27,9 +45,11 @@ def solve(filename):
             break
         else:
             del board
-            g, rflb, ob, rfrb, L, p = read.read_bff(filename)
+            g, rflb, ob, rfrb, L, p = read_bff(filename)
             board = Board(g, L, p, rflb, ob, rfrb)
             count += 1
+    print(type(solution))
+    print(solution)
     return solution
 
 
@@ -37,7 +57,7 @@ def board_display(output, filename):
     board_name, _ = filename.split(".")
     sol_file = open(board_name + "_solution.txt", "w")
     sol_file.write("Solution for " + board_name + ":\n")
-    cleanstring = re.sub('\W+', "", output)
+    cleanstring = sub('\W+', "", output)
     cleanstring_grid = wrap(cleanstring, int(len(cleanstring) ** 0.5))
     new_strings = []
     for i, j in enumerate(cleanstring_grid):
