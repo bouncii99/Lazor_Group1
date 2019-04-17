@@ -170,11 +170,6 @@ def calculate_laser(grid, laser, transmit, reflect):
             break
     for point in lp:
         laser_points.append(point)
-    print type(grid)
-    print type(laser)
-    print type(transmit)
-    print type(reflect)
-    print grid, laser, transmit, reflect
     return laser_points
 
 
