@@ -29,35 +29,55 @@ def solve(filename):
 
     **Returns**
 
-        solution: *str*
+        solution: *list, str*
+            The solution for the board. Each list in the solution corresponds
+            to a row of the grid and each string element in the row
+            corresponds to the appropriate location where a block can be
+            placed.
     """
     # Read and parse through board file
     g, rflb, ob, rfrb, L, p = read_bff(filename)
     # Initialize board class
     board = Board(g, L, p, rflb, ob, rfrb)
-    # incorrect_boards = []
-    count = 0
+    # Try random solutions using a while loop
     while True:
-        # Place blocks randomly on the board and refresh lasers
         try_solution(board)
+        # Check if the generated board solves the puzzle
         if Board.check_solution(board):
+            # Save the solution and exit the while loop
             solution = str(board.grid)
             break
         else:
+            # Reinitialize the original board object
             del board
             g, rflb, ob, rfrb, L, p = read_bff(filename)
             board = Board(g, L, p, rflb, ob, rfrb)
-            count += 1
-    print(type(solution))
-    print(solution)
     return solution
 
 
-def board_display(output, filename):
+def board_display(filename, solution):
+    """
+    This function creates a text file with the solution to the desired Lazor
+    puzzle.
+
+    **Parameters**
+
+        filename: *str*
+            Name of the .bff file
+        solution: *list, str*
+            The solution to the puzzle in the .bff file.
+
+    **Returns**
+
+        None
+    """
+    # Retrive the name of the puzzle without the file extension
     board_name, _ = filename.split(".")
+    # Open the new text file to output the solution to
     sol_file = open(board_name + "_solution.txt", "w")
+    # Print solution title
     sol_file.write("Solution for " + board_name + ":\n")
-    cleanstring = sub('\W+', "", output)
+    cleanstring = sub('\W+', "", solution)
     cleanstring_grid = wrap(cleanstring, int(len(cleanstring) ** 0.5))
     new_strings = []
     for i, j in enumerate(cleanstring_grid):
@@ -73,4 +93,4 @@ if __name__ == "__main__":
              "tiny_5.bff", "yarn_5.bff"]
     for file in files:
         output = solve(file)
-        board_display(output, file)
+        board_display(file, output)
