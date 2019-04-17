@@ -99,6 +99,7 @@ def main():
     print("\nPoints that need the lasers to intersect:")
     for i in p:
         print(i)
+    print len(g)
 
 
 if __name__ == '__main__':
