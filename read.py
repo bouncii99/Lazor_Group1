@@ -52,6 +52,7 @@ def read_bff(filename):
             in_grid = False
         if in_grid:
             line = line.replace(" ", "")
+            line = line.replace("\t", "")
             grid.append(list(line.strip("\n")))
         if "GRID START" in line:
             in_grid = True
