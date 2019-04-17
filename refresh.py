@@ -106,20 +106,20 @@ def calculate_laser(grid, laser, transmit, reflect):
     Checks whether the current position is on valid or not. Then goes on to
     calulate all possible points from there by considering which block(s)
     is(are) around it (none, A, B, C).
-    It returns a list of points. 
+    It returns a list of points.
 
     **Parameters**
 
     grid: *list*
-        This is a list of lists which contain the setup of the board. 
+        This is a list of lists which contain the setup of the board.
     laser: *list*
-        Contains the coordinate of the laser and the diretion of travel. 
+        Contains the coordinate of the laser and the diretion of travel.
     transmit: *list*
-        A parameter that determines whether a type of block is allowed to transmit
-        the laser or not. 
+        A parameter that determines whether a type of block is allowed to
+        transmit the laser or not.
     reflect: *list*
-        A paramter that determines wheter a type of block is allowed to reflect the
-        laser or not. 
+        A paramter that determines wheter a type of block is allowed to
+        reflect the laser or not.
     '''
     laser_points, lp = [], []
     cx = laser[0]
