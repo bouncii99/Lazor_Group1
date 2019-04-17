@@ -32,22 +32,25 @@ def solve(filename):
             count += 1
     return solution
 
-def board_display(disp):
-    sol_file = open("Solution.txt", "w")
-    cleanstring = re.sub('\W+',"", disp)
+
+def board_display(output, filename):
+    board_name, _ = filename.split(".")
+    sol_file = open(board_name + "_solution.txt", "w")
+    sol_file.write("Solution for " + board_name + ":\n")
+    cleanstring = re.sub('\W+', "", output)
     cleanstring_grid = wrap(cleanstring, int(len(cleanstring) ** 0.5))
-    return cleanstring_grid
-    sol_file.writelines(["%s\n" % item  for item in cleanstring])
-    return sol_file
+    new_strings = []
+    for i, j in enumerate(cleanstring_grid):
+        new_strings.append(" ".join(j))
+    for i in new_strings:
+        sol_file.write("%s\n" % i)
 
 
 if __name__ == "__main__":
     # Input test cases
     files = ["dark_1.bff", "mad_1.bff", "mad_4.bff",
              "mad_7.bff", "numbered_6.bff", "showstopper_4.bff",
-             "tiny_5.bff", "yarn_5.bff"
-    ]
+             "tiny_5.bff", "yarn_5.bff"]
     for file in files:
-        solve_input = solve(file)
-        output = (board_display(solve_input))
-        print output
+        output = solve(file)
+        board_display(output, file)
