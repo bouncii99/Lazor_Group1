@@ -77,17 +77,20 @@ def board_display(filename, solution):
     sol_file = open(board_name + "_solution.txt", "w")
     # Print solution title
     sol_file.write("Solution for " + board_name + ":\n")
+    # Concatenate individual characters in the same row into one string
     cleanstring = sub('\W+', "", solution)
     cleanstring_grid = wrap(cleanstring, int(len(cleanstring) ** 0.5))
+    # For each row, join the characters with spaces
     new_strings = []
     for i, j in enumerate(cleanstring_grid):
         new_strings.append(" ".join(j))
+    # Write each line to the output file
     for i in new_strings:
         sol_file.write("%s\n" % i)
 
 
 if __name__ == "__main__":
-    # Input test cases
+    # Test cases
     files = ["dark_1.bff", "mad_1.bff", "mad_4.bff",
              "mad_7.bff", "numbered_6.bff", "showstopper_4.bff",
              "tiny_5.bff", "yarn_5.bff"]
