@@ -21,9 +21,10 @@ class Laser(object):
             on the board. Each list inside the list represents a row of the
             board.
         transmit: *list, Boolean*
-            A block property that is true whenever a laser continues on its path.
+            A block property that is true whenever a laser continues
+            on its path.
         reflect:  *list, Boolean*
-            A block property that is true whenever a laser changes direction.            
+            A block property that is true whenever a laser changes direction.
     """
     def __init__(self, laser, grid, transmit, reflect):
         self.laser = laser
@@ -67,15 +68,19 @@ class Board(object):
             on the board. Each list inside the list represents a row of the
             board.
         lasers: *list, tuple*
-            Each laser is a list of tuples that represent the points along its path.
+            Each laser is a list of tuples that represent
+            the points along its path.
         points: *list, tuple*
-            A list of points that the laser has to intersect to solve the board.
+            A list of points that the laser has to intersect
+            to solve the board.
         reflect: *list, Boolean*
-            A block property that reflects a laser (i.e changes its direction).
+            A block property that reflects a laser
+            (i.e changes its direction).
         opaque: *list, Boolean*
             A block property that stops a laser.
         refract: *list, Boolean*
-            A block property that simultaneously reflects and transmits a laser.
+            A block property that simultaneously reflects
+            and transmits a laser.
     """
     def __init__(self, grid, lasers, points, reflect, opaque, refract):
         # Define grid
@@ -159,7 +164,9 @@ class Board(object):
             return -1
 
     def generate_board(self):
-        # Calls the place_block function to randomly place blocks
+        '''
+        Calls the place_block function to randomly place blocks.
+        '''
         block_list, block_positions = [], []
         for i in range(self.blocks[0]):
             block_list.append('A')
@@ -181,7 +188,10 @@ class Board(object):
         return self, block_positions
 
     def refresh_lasers(self):
-        # Refreshes the position and/or direction of a laser upon hitting a block
+        '''
+        Refreshes the position and/or direction of a
+        laser upon hitting a block.
+        '''
         new_list = []
         for i in self.lasers:
             new_list.append(i)
@@ -199,7 +209,10 @@ class Board(object):
         return self, self.lasers
 
     def check_solution(self):
-        # Checks to see if all of the necessary points are interesected by the lasers
+        '''
+        Checks to see if all of the necessary points are
+        interesected by the lasers.
+        '''
         complete_list = []
         for i in self.lasers:
             for j in i.laser_points:
