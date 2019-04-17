@@ -16,12 +16,14 @@ class Laser(object):
             A list of integers representing the laser. The first two integers
             correspond to the position of the laser and the last two integers
             correspond to the direction it is pointing in.
-        xbound: *int*
-            The rightmost boundary of the grid. This value is used to specify
-            the possible domain of points that the laser intersects.
-        ybound: *int*
-            The bottom boundary of the grid. This value is used to specify
-            the possible range of points that the laser intersects.
+        grid: *list, str*
+            The list of characters that represents all of the available spots
+            on the board. Each list inside the list represents a row of the
+            board.
+        transmit: *list, Boolean*
+            A block property that is true whenever a laser continues on its path.
+        reflect:  *list, Boolean*
+            A block property that is true whenever a laser changes direction.            
     """
     def __init__(self, laser, grid, transmit, reflect):
         self.laser = laser
@@ -64,6 +66,16 @@ class Board(object):
             The list of characters that represents all of the available spots
             on the board. Each list inside the list represents a row of the
             board.
+        lasers: *list, tuple*
+            Each laser is a list of tuples that represent the points along its path.
+        points: *list, tuple*
+            A list of points that the laser has to intersect to solve the board.
+        reflect: *list, Boolean*
+            A block property that reflects a laser (i.e changes its direction).
+        opaque: *list, Boolean*
+            A block property that stops a laser.
+        refract: *list, Boolean*
+            A block property that simultaneously reflects and transmits a laser.
     """
     def __init__(self, grid, lasers, points, reflect, opaque, refract):
         # Define grid
@@ -71,7 +83,8 @@ class Board(object):
         # Define dimensions
         self.xmax = len(self.grid[0]) - 1
         self.ymax = len(self.grid) - 1
-        # Generate arrays of booleans for reflect and transmit
+        # Generate arrays of booleans for reflect and transmit to give each
+        # block its appropriate properties
         transmit_arr, reflect_arr = [], []
         for i in range(len(grid)):
             col_id = grid[i]
@@ -122,11 +135,11 @@ class Board(object):
         return s1
 
     def pos_check(self, x, y):
-        """ Check if a grid position is valid """
+        # Check if a grid position is valid
         return x >= 0 and x <= self.xmax and y >= 0 and y <= self.ymax
 
     def place_block(self, block, pos, transmit, reflect):
-        """ Place a block at a given position """
+        # Place a block at a given position
         x = pos[0]
         y = pos[1]
         # Check if the position is valid
@@ -146,7 +159,7 @@ class Board(object):
             return -1
 
     def generate_board(self):
-        """ Calls the place_block function to randomly place blocks """
+        # Calls the place_block function to randomly place blocks
         block_list, block_positions = [], []
         for i in range(self.blocks[0]):
             block_list.append('A')
@@ -168,6 +181,7 @@ class Board(object):
         return self, block_positions
 
     def refresh_lasers(self):
+        # Refreshes the position and/or direction of a laser upon hitting a block
         new_list = []
         for i in self.lasers:
             new_list.append(i)
@@ -185,6 +199,7 @@ class Board(object):
         return self, self.lasers
 
     def check_solution(self):
+        # Checks to see if all of the necessary points are interesected by the lasers
         complete_list = []
         for i in self.lasers:
             for j in i.laser_points:
