@@ -37,6 +37,25 @@ def next_position(x, y, vx, vy):
 
 
 def calc_center(p1, p2):
+    '''
+    Given the edges p1 and p2, this function will calculate the center of the
+    block on which they lie.
+    Will return the new coordinates as a tuple.
+
+    **Parameters**
+        p1: *list*
+            The x and y coordinates of an edge point.
+        p2: *list*
+            The x and y coordinates of an edge point.
+        x: *int*
+            x coordinate of p1.
+        y: *int*
+            y coordinate of p1.
+        nx: *int*
+            x coordinate of p2.
+        ny: *int*
+            y coordinate of p2.
+    '''
     x = p1[0]
     y = p1[1]
     nx = p2[0]
@@ -48,30 +67,65 @@ def calc_center(p1, p2):
 
 
 def map_to_block_grid(pos):
+    '''
+    Maps between the block grid and laser grid.
+    '''
     nx = (pos[0] - 1) / 2
     ny = (pos[1] - 1) / 2
     return (nx, ny)
 
 
 def reflect_laser(x, y, vx, vy):
-    # If x is even, flip the sign of vy
+    '''
+    Calculates how the laser has to be reflected based on where it encounters
+    a block. If the x coordinate is even, the polarity of y direction vector
+    is flipped and if odd, the polarity x direction vector is flipped.
+    Once done, the new position is calculated.
+
+    **Parameters**
+
+    x: *int*
+        The x coordinate of the block.
+    y: *int*
+        The y coordinate of the block.
+    nx: *int*
+        The direction vector of x.
+    ny: *int*
+        The direction vector of y.
+    '''
     if x % 2 != 0:
         vy = -1 * vy
-    # If x is odd, flip the sign of vx
     else:
         vx = -1 * vx
-    # Calculate new position
     nx, ny = next_position(x, y, vx, vy)
     return nx, ny, vx, vy
 
 
 def calculate_laser(grid, laser, transmit, reflect):
+    '''
+    Checks whether the current position is on valid or not. Then goes on to
+    calulate all possible points from there by considering which block(s)
+    is(are) around it (none, A, B, C).
+    It returns a list of points. 
+
+    **Parameters**
+
+    grid: *list*
+        This is a list of lists which contain the setup of the board. 
+    laser: *list*
+        Contains the coordinate of the laser and the diretion of travel. 
+    transmit: *list*
+        A parameter that determines whether a type of block is allowed to transmit
+        the laser or not. 
+    reflect: *list*
+        A paramter that determines wheter a type of block is allowed to reflect the
+        laser or not. 
+    '''
     laser_points, lp = [], []
     cx = laser[0]
     cy = laser[1]
     vx = laser[2]
     vy = laser[3]
-    initial_direction = (vx, vy)
     xmax = 2 * (len(grid[0]) - 1) + 2
     ymax = 2 * (len(grid) - 1) + 2
     while True:
@@ -102,11 +156,12 @@ def calculate_laser(grid, laser, transmit, reflect):
                 else:
                     # Refract block
                     nx2, ny2, vx2, vy2 = reflect_laser(cx, cy, vx, vy)
-                    center_test = calc_center((cx, cy), (nx2, ny2))
-                    block_position_test = map_to_block_grid(center_test)
-                    does_transmit_test = transmit[block_position_test[1]][block_position_test[0]]
-                    if does_transmit_test:
-                        lp = calculate_laser(grid, [nx2, ny2, vx2, vy2], transmit, reflect)
+                    center_calc = calc_center((cx, cy), (nx2, ny2))
+                    block_pos = map_to_block_grid(center_calc)
+                    transmit_rfrb = transmit[block_pos[1]][block_pos[0]]
+                    if transmit_rfrb:
+                        lp = calculate_laser(grid, [nx2, ny2, vx2, vy2],
+                                             transmit, reflect)
                     cx = nx
                     cy = ny
             else:
@@ -115,14 +170,21 @@ def calculate_laser(grid, laser, transmit, reflect):
             break
     for point in lp:
         laser_points.append(point)
+    print type(grid)
+    print type(laser)
+    print type(transmit)
+    print type(reflect)
+    print grid, laser, transmit, reflect
     return laser_points
 
 
 def main():
     grid = [['x', 'o', 'o'], ['o', 'o', 'o'], ['o', 'o', 'x']]
     laser = [3, 0, -1, 1]
-    transmit_array = [[True, True, True], [True, True, True], [True, True, True]]
-    reflect_array = [[False, False, False], [False, False, False], [False, False, False]]
+    transmit_array = [[True, True, True], [True, True, True],
+                      [True, True, True]]
+    reflect_array = [[False, False, False], [False, False, False],
+                     [False, False, False]]
     lp = calculate_laser(grid, laser, transmit_array, reflect_array)
     print(lp)
 
